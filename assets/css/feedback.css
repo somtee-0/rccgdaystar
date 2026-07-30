@@ -1,0 +1,178 @@
+/* =========================================
+   PROFILE / FEEDBACK DASHBOARD STYLES
+========================================== */
+.profile-dashboard-section {
+    padding: 40px 0 80px 0;
+    background-color: #f4f6f9;
+    min-height: calc(100vh - 80px);
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* SIDEBAR CARD */
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.user-info-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-settings-link {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    color: #6c757d;
+    font-size: 0.85rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.sidebar-settings-link:hover {
+    color: #110738;
+}
+
+.user-avatar-circle {
+    width: 80px;
+    height: 80px;
+    background-color: #e2b74c;
+    color: #110738;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 12px auto 16px auto;
+}
+
+.user-display-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #110738;
+    margin: 0 0 4px 0;
+}
+
+.user-phone-number {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* SIDEBAR NAV LINKS */
+.sidebar-nav-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    color: #495057;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu-item:last-child {
+    border-bottom: none;
+}
+
+.sidebar-menu-item i {
+    font-size: 1.2rem;
+}
+
+.sidebar-menu-item:hover {
+    background-color: #f8f9fa;
+    color: #110738;
+}
+
+.sidebar-menu-item.active {
+    color: #110738;
+    font-weight: 700;
+    background-color: #f0ecfc;
+    border-left: 4px solid #110738;
+}
+
+/* EMPTY FEEDBACK PANEL */
+.feedback-content-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 60px 24px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedback-empty-icon {
+    font-size: 4.5rem;
+    color: #110738;
+    margin-bottom: 16px;
+    line-height: 1;
+}
+
+.empty-feedback-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #110738;
+    margin-bottom: 8px;
+}
+
+.empty-feedback-desc {
+    color: #6c757d;
+    font-size: 0.95rem;
+    max-width: 380px;
+    margin: 0 auto 24px auto;
+    line-height: 1.5;
+}
+
+.btn-copy-link {
+    background-color: #e2b74c;
+    color: #110738;
+    font-weight: 700;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: transform 0.15s ease, background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-copy-link:hover {
+    background-color: #d4a73b;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}

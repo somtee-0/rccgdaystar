@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - RCCG Daystar Hub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- BOOTSTRAP ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/hub.css">
+    <link rel="stylesheet" href="../assets/css/settings.css">
+</head>
+
+<body>
+
+    <!-- HEADER BAR -->
+    <div data-include-header="hub-includes/header.html"></div>
+
+    <!-- FULL SETTINGS PAGE WRAPPER (GREY SECONDARY BACKGROUND) -->
+    <main class="settings-page-wrapper">
+        <div class="settings-container">
+
+            <!-- Back to Hub Button -->
+            <div class="settings-top-bar">
+                <a href="index.html" class="back-to-hub-btn">
+                    <i class="bi bi-chevron-left"></i> Settings
+                </a>
+            </div>
+
+            <!-- Two-Column Layout -->
+            <div class="settings-layout-grid">
+
+                <!-- LEFT SIDEBAR -->
+                <aside class="settings-sidebar-card">
+                    <button class="settings-tab-btn active" data-tab="personal-tab">
+                        Personal details
+                    </button>
+                    <button class="settings-tab-btn" data-tab="business-tab">
+                        Business details <i class="bi bi-chevron-right"></i>
+                    </button>
+                    <button class="settings-tab-btn" data-tab="confirm-phone-tab"
+                        style="color: #25D366; font-weight: 600;">
+                        Confirm phone number
+                    </button>
+                    <button class="settings-tab-btn" data-tab="change-email-tab">
+                        Change email
+                    </button>
+                    <button class="settings-tab-btn" data-tab="change-password-tab">
+                        Change password
+                    </button>
+                    <button class="settings-tab-btn text-danger" data-tab="delete-account-tab">
+                        Delete my account permanently
+                    </button>
+                    <a href="index.html" class="settings-tab-btn" style="color: #777777;">
+                        Log out
+                    </a>
+                </aside>
+
+                <!-- RIGHT CONTENT CARD -->
+                <section class="settings-content-card">
+
+                    <!-- TAB 1: PERSONAL DETAILS -->
+                    <div id="personal-tab" class="settings-tab-content active">
+                        <div class="profile-avatar-wrapper">
+                            <div class="avatar-circle-display">
+                                <i class="bi bi-person"></i>
+                                <button class="avatar-edit-badge" title="Change Avatar">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <form id="personal-form">
+                            <div class="floating-input-group">
+                                <label>First Name*</label>
+                                <input type="text" value="Dwayne" required maxlength="20">
+                                <span class="char-count">6 / 20</span>
+                            </div>
+
+                            <div class="floating-input-group">
+                                <label>Last Name*</label>
+                                <input type="text" value="Henry" required maxlength="20">
+                                <span class="char-count">5 / 20</span>
+                            </div>
+
+                            <div class="floating-input-group">
+                                <label>Birthday</label>
+                                <input type="date">
+                            </div>
+
+                            <div class="floating-input-group">
+                                <label>Sex</label>
+                                <select>
+                                    <option value="Do not specify" selected>Do not specify</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn-save-action" id="saveProfileBtn">Save</button>
+                        </form>
+                    </div>
+
+                    <!-- TAB 2: BUSINESS DETAILS -->
+                    <div id="business-tab" class="settings-tab-content">
+                        <form id="business-form">
+                            <div class="floating-input-group">
+                                <label>Business Name</label>
+                                <input type="text" placeholder="e.g. Adukeade Fashion House" required>
+                            </div>
+
+                            <div class="floating-input-group">
+                                <label>About Company</label>
+                                <textarea rows="4" placeholder="Brief description of your services..."
+                                    required></textarea>
+                            </div>
+
+                            <div class="floating-input-group">
+                                <label>WhatsApp Direct Number</label>
+                                <input type="tel" placeholder="08012345678" required>
+                            </div>
+
+                            <div class="floating-input-group">
+                                <label>Social Handles</label>
+                                <input type="text" placeholder="Instagram / Facebook link">
+                            </div>
+
+                            <button type="submit" class="btn-save-action">Save Business Details</button>
+                        </form>
+                    </div>
+
+                    <!-- TAB 3: CONFIRM PHONE -->
+                    <div id="confirm-phone-tab" class="settings-tab-content">
+                        <div class="phone-confirm-container">
+                            <h3 class="phone-confirm-title">
+                                We need to ensure that your new number is correct 📲
+                            </h3>
+                            <p class="phone-confirm-desc">
+                                Click below to receive your verification code directly via WhatsApp for
+                                <strong>07061425461</strong>
+                            </p>
+
+                            <button type="button" class="btn-confirm-whatsapp" id="btn-whatsapp-code">
+                                <i class="bi bi-whatsapp" style="font-size: 1.2rem;"></i> Confirm via WhatsApp
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: CHANGE EMAIL -->
+                    <div id="change-email-tab" class="settings-tab-content">
+                        <div class="floating-input-group">
+                            <label>Email Address</label>
+                            <input type="email" value="dwayne.henry44@gmail.com">
+                        </div>
+                        <button type="button" class="btn-save-action" id="updateEmailBtn">Update Email</button>
+                    </div>
+
+                    <!-- TAB 5: CHANGE PASSWORD -->
+                    <div id="change-password-tab" class="settings-tab-content">
+                        <div class="floating-input-group">
+                            <label>Current Password</label>
+                            <input type="password">
+                        </div>
+                        <div class="floating-input-group">
+                            <label>New Password</label>
+                            <input type="password">
+                        </div>
+                        <button type="button" class="btn-save-action">Update Password</button>
+                    </div>
+
+                    <!-- TAB 6: DELETE ACCOUNT -->
+                    <div id="delete-account-tab" class="settings-tab-content">
+                        <h3 style="color: #dc3545; margin-bottom: 10px;">Delete Account</h3>
+                        <p style="color: #666; margin-bottom: 20px;">This action is permanent and will remove all your
+                            active adverts and feedback.</p>
+                        <button type="button" class="btn-save-action" style="background: #dc3545;">Permanently Delete
+                            Account</button>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- ADMIN REVIEW NOTIFICATION MODAL -->
+    <div id="reviewNoticeModal" class="custom-modal-backdrop">
+        <div class="notice-card">
+            <div class="notice-icon-box">
+                <i class="bi bi-clock-history"></i>
+            </div>
+            <h4 style="color: #110738; font-weight: 700; margin-bottom: 8px;">Under Review</h4>
+            <p style="color: #666; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px;">
+                Your requested update will undergo a thorough security and verification process by our admin team before
+                changes are published to the Hub.
+            </p>
+            <button type="button" id="close-notice-btn" class="btn-save-action" style="width: 100%; margin: 0;">Got
+                it!</button>
+        </div>
+    </div>
+
+    <!-- JS EXTERNAL FILE -->
+    <script src="../assets/js/settings.js"></script>
+    <script src="../assets/js/header.js"></script>
+</body>
+
+</html>

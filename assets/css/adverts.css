@@ -1,0 +1,507 @@
+/* ==========================================================================
+   MARKETPLACE / SHOP ADVERTS PAGE (ETSY INSPIRED DESIGN)
+   ========================================================================== */
+
+.adverts-page-body {
+    background-color: #f7f7f8;
+    color: #222222;
+    min-height: 100vh;
+}
+
+.adverts-wrapper {
+    padding-top: 25px;
+    padding-bottom: 70px;
+}
+
+/* NAVBAR BACK LINK */
+.hub-back-link {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s ease;
+}
+
+.hub-back-link:hover {
+    color: #e2b74c;
+}
+
+/* ETSY-STYLE SHOP HERO CARD */
+.shop-hero-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    border: 1px solid #e1e1e1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.shop-hero-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+}
+
+.shop-logo-box {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #110738, #2a1575);
+    color: #e2b74c;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    box-shadow: 0 6px 16px rgba(17, 7, 56, 0.15);
+    flex-shrink: 0;
+}
+
+.shop-title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #222222;
+    margin: 0 0 4px 0;
+}
+
+.shop-tagline {
+    font-size: 0.92rem;
+    color: #555555;
+    margin-bottom: 10px;
+}
+
+.shop-meta-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #666666;
+    margin-bottom: 16px;
+}
+
+.meta-divider {
+    color: #ddd;
+}
+
+.rating-stars {
+    color: #222;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.rating-stars i {
+    color: #222222;
+    font-size: 0.8rem;
+}
+
+.shop-actions-row {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-shop-outline {
+    background: #ffffff;
+    border: 1.5px solid #222222;
+    color: #222222;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-shop-outline:hover {
+    background: #222222;
+    color: #ffffff;
+}
+
+/* SHOP OWNER SIDE BADGE */
+.shop-owner-badge {
+    text-align: center;
+    border-left: 1px solid #eee;
+    padding-left: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.shop-owner-badge small {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: #888;
+    margin-bottom: 6px;
+}
+
+.owner-avatar {
+    font-size: 2.2rem;
+    color: #110738;
+    line-height: 1;
+}
+
+.owner-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #222;
+    margin: 4px 0;
+}
+
+.link-contact-owner {
+    font-size: 0.82rem;
+    color: #555;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.link-contact-owner:hover {
+    text-decoration: underline;
+    color: #110738;
+}
+
+/* MARKETPLACE SIDEBAR + GRID LAYOUT */
+.marketplace-body-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 30px;
+}
+
+/* SIDEBAR */
+.shop-sidebar .sidebar-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #222222;
+    margin-bottom: 14px;
+}
+
+.sidebar-search-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.sidebar-search-box i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.sidebar-search-box input {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    background: #fff;
+}
+
+.sidebar-search-box input:focus {
+    outline: none;
+    border-color: #222;
+}
+
+.sidebar-category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+}
+
+.sidebar-category-list li {
+    margin-bottom: 4px;
+}
+
+.sidebar-category-list a {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: #444;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.15s ease;
+}
+
+.sidebar-category-list li.active a,
+.sidebar-category-list a:hover {
+    background: #e9e9eb;
+    color: #222;
+    font-weight: 600;
+}
+
+.btn-sidebar-contact {
+    width: 100%;
+    padding: 10px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: #222;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s ease;
+}
+
+.btn-sidebar-contact:hover {
+    background: #f0f0f0;
+}
+
+/* ADVERTS GRID & CARDS */
+.adverts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+    width: 100%;
+}
+
+.ad-card {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e1e1e1;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ad-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+}
+
+/* SINGLE IMAGE CARD CONTAINER */
+.ad-image-container {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    /* Gives portrait church flyers full height room */
+    background: #110738;
+}
+
+.ad-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Prevents text cutting/squeezing */
+}
+
+.ad-status-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(40, 167, 69, 0.9);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 12px;
+    z-index: 2;
+}
+
+.grid-img-box {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.grid-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ad-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.ad-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #222222;
+    margin: 0 0 6px 0;
+    line-height: 1.35;
+}
+
+.ad-desc {
+    font-size: 0.83rem;
+    color: #666666;
+    margin-bottom: 14px;
+    line-height: 1.45;
+    flex-grow: 1;
+}
+
+.ad-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 12px;
+}
+
+.ad-price-tag strong {
+    font-size: 1.05rem;
+    color: #110738;
+    font-weight: 700;
+}
+
+.btn-delete-ad {
+    background: #fff0f0;
+    color: #d9534f;
+    border: 1px solid #f5c6cb;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* FORM MODAL / UPLOAD STYLES */
+.upload-ad-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 28px;
+    border: 1px solid #ddd;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.custom-file-dropzone {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    background: #fafafa;
+    cursor: pointer;
+    position: relative;
+}
+
+.custom-file-dropzone input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.image-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.preview-thumb-box {
+    position: relative;
+    height: 75px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.preview-thumb-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.btn-remove-thumb {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background: rgba(220, 38, 38, 0.9);
+    color: #fff;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
+
+.form-group-custom {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.form-group-custom input,
+.form-group-custom select,
+.form-group-custom textarea {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-actions-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-cancel-ad {
+    background: #eee;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-submit-ad {
+    background: #e2b74c;
+    color: #110738;
+    border: none;
+    padding: 10px 22px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@media (max-width: 850px) {
+    .marketplace-body-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .shop-owner-badge {
+        border-left: none;
+        border-top: 1px solid #eee;
+        padding-left: 0;
+        padding-top: 15px;
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}

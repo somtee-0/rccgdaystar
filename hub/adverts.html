@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Shop Adverts - Daystar Church Hub</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/hub.css">
+    <link rel="stylesheet" href="../assets/css/adverts.css">
+</head>
+
+<body class="adverts-page-body">
+    <!-- NAVBAR -->
+    <div data-include-header="hub-includes/header.html"></div>
+
+    <main class="adverts-wrapper container">
+        <!-- ETSY-STYLE VENDOR PROFILE HERO BANNER -->
+        <div class="shop-hero-card">
+            <div class="shop-hero-main">
+                <div class="shop-logo-box">
+                    <i class="bi bi-shop"></i>
+                </div>
+                <div class="shop-details-box">
+                    <h1 class="shop-title" id="displayShopTitle">Church Hub Vendor</h1>
+                    <p class="shop-tagline" id="displayShopTagline">Official Vendor Storefront & Product Catalog</p>
+                    ...
+                </div>
+
+                <!-- DYNAMIC METADATA ROW -->
+                <div class="shop-meta-row">
+                    <span><i class="bi bi-geo-alt-fill text-gold"></i> <span
+                            id="displayShopLocation">Lagos</span></span>
+                    <span class="meta-divider">|</span>
+                    <span><i class="bi bi-bag-check-fill text-gold"></i> <span id="displayShopSales">0 Hub
+                            Sales</span></span>
+                    <span class="meta-divider">|</span>
+                    <span class="rating-stars">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <strong id="displayShopReviews">(0)</strong>
+                    </span>
+                    <span class="meta-divider">|</span>
+                    <span>Member since <span id="displayMemberSince">2026</span></span>
+                </div>
+
+                <div class="shop-actions-row">
+                    <button type="button" class="btn-shop-outline" id="toggleAdFormBtn">
+                        <i class="bi bi-plus-circle-fill"></i> Post Advert
+                    </button>
+                </div>
+            </div>
+
+            <!-- DYNAMIC INTERACTIVE SHOP OWNER BADGE -->
+            <div class="shop-owner-badge" onclick="handleShopOwnerRouting()"
+                style="display: inline-flex; flex-direction: column; align-items: flex-start; background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #110738; padding: 12px 18px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); cursor: pointer; user-select: none; transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; z-index: 10;">
+
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                    <span
+                        style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.8px; color: #64748b; text-transform: uppercase;">hub</span>
+                    <i class="bi bi-person-circle" style="font-size: 0.85rem; color: #e2b74c;"></i>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <i class="bi bi-shop" style="font-size: 1.1rem; color: #110738;"></i>
+                    <span id="displayOwnerName" style="font-weight: 700; color: #110738; font-size: 0.95rem;">Vendor
+                        Portal</span>
+                    <i class="bi bi-chevron-right" style="font-size: 0.8rem; color: #94a3b8; margin-left: 4px;"></i>
+                </div>
+            </div>
+
+            <!-- UPLOAD FORM MODAL / CARD -->
+            <div class="upload-ad-card" id="uploadAdFormCard" style="display: none;">
+                <div class="card-form-header">
+                    <h3><i class="bi bi-megaphone-fill text-gold"></i> Post Advert</h3>
+                    <p>Upload up to 4 images and listing details to share on Church Hub.</p>
+                </div>
+
+                <form id="createAdvertForm">
+                    <div class="form-group-custom">
+                        <label>Advert / Offer Title *</label>
+                        <input type="text" id="adTitle" placeholder="e.g., iPhone Screen Replacement & Repairs"
+                            required>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group-custom">
+                            <label>Service Category *</label>
+                            <select id="adCategory" required>
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="Tech Support & Devices">Tech Support & Devices</option>
+                                <option value="Fashion & Creativity">Fashion & Creativity</option>
+                                <option value="Maintenance Services">Maintenance & Plumbing</option>
+                                <option value="Catering & Events">Catering & Events</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group-custom">
+                            <label>Price / Starting Rate (Optional)</label>
+                            <input type="text" id="adPrice" placeholder="e.g., ₦15,000 or Contact for Price">
+                        </div>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label>Advert Description *</label>
+                        <textarea id="adDesc" rows="3" placeholder="Describe the deal, offer, or service features..."
+                            required></textarea>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label>Upload Banner / Product Images (Max 4) *</label>
+                        <div class="custom-file-dropzone" id="dropzoneArea">
+                            <i class="bi bi-cloud-arrow-up-fill dropzone-icon"></i>
+                            <div class="dropzone-text"><strong>Click or drag images here</strong> (Max 4 images)
+                            </div>
+                            <span class="dropzone-sub">PNG, JPG, or WEBP</span>
+                            <input type="file" id="adImageInput" accept="image/*" multiple required>
+                        </div>
+
+                        <div class="image-preview-grid" id="imagePreviewContainer"></div>
+                    </div>
+
+                    <div class="form-actions-row">
+                        <button type="button" class="btn-cancel-ad" id="cancelAdFormBtn">Cancel</button>
+                        <button type="submit" class="btn-submit-ad"><i class="bi bi-send-fill"></i> Publish
+                            Advert</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- MAIN MARKETPLACE LAYOUT (SIDEBAR + ADVERTS) -->
+            <div class="marketplace-body-layout">
+
+                <!-- LEFT SIDEBAR -->
+                <aside class="shop-sidebar">
+                    <h3 class="sidebar-heading">Items</h3>
+
+                    <ul class="sidebar-category-list">
+                        <li class="active"><a href="#">All <span id="catCountAll">(0)</span></a></li>
+                        <li><a href="#">Tech & Gadgets</a></li>
+                        <li><a href="adverts.html">Adverts</a></li>
+                    </ul>
+                    </a>
+                    <a href="feedback.html" class="sidebar-menu-item active">
+                        <i class="bi bi-chat-square-text"></i>
+                        <span>Feedback</span>
+                    </a>
+                </aside>
+
+                <!-- RIGHT ITEMS CONTENT GRID -->
+                <section class="shop-items-section">
+                    <!-- ADVERTS GRID CONTAINER -->
+                    <div class="adverts-grid" id="vendorAdvertsGrid"></div>
+                </section>
+
+            </div>
+
+    </main>
+
+    <script src="../assets/js/hub.js"></script>
+    <script src="../assets/js/adverts.js"></script>
+    <script src="../assets/js/header.js"></script>
+    <script src="../assets/js/shop.js"></script>
+</body>
+
+</html>

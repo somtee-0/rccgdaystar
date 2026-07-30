@@ -1,0 +1,354 @@
+/* ==========================================================================
+   DAYSTAR HUB - DEDICATED SETTINGS PAGE & VERIFICATION STYLES
+   ========================================================================== */
+
+/* Full Page Wrapper with Light Grey Background */
+.settings-page-wrapper {
+    background-color: #f4f6f8 !important;
+    min-height: calc(100vh - 70px);
+    padding: 40px 0 80px 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Container for Page Alignment */
+.settings-container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Top Back Navigation Bar */
+.settings-top-bar {
+    margin-bottom: 25px;
+}
+
+.back-to-hub-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #110738;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.back-to-hub-btn:hover {
+    color: #e2b74c;
+}
+
+/* Main Grid Layout */
+.settings-layout-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 35px;
+    align-items: start;
+}
+
+/* Left Sidebar Navigation Card */
+.settings-sidebar-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.settings-tab-btn {
+    width: 100%;
+    text-align: left;
+    padding: 16px 20px;
+    border: none;
+    background: #ffffff;
+    color: #333333;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s ease;
+}
+
+.settings-tab-btn:last-child {
+    border-bottom: none;
+}
+
+.settings-tab-btn:hover {
+    background: #f8f9fa;
+    color: #28a745;
+}
+
+.settings-tab-btn.active {
+    color: #28a745 !important;
+    font-weight: 700;
+    background: #ffffff;
+}
+
+.settings-tab-btn i {
+    font-size: 0.85rem;
+    color: #aaaaaa;
+}
+
+.settings-tab-btn.active i {
+    color: #28a745;
+}
+
+.settings-tab-btn.text-danger {
+    color: #dc3545 !important;
+}
+
+.settings-tab-btn.text-danger:hover {
+    background: rgba(220, 53, 69, 0.05);
+}
+
+.settings-tab-btn.active[data-tab="confirm-phone-tab"],
+.settings-tab-btn.active[data-tab="change-email-tab"] {
+    color: #28a745 !important;
+}
+
+/* Right Content Area Card */
+.settings-content-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    min-height: 480px;
+}
+
+.settings-tab-content {
+    display: none;
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+.settings-tab-content.active {
+    display: block;
+}
+
+/* Form Styles & Floating Input Outlines */
+.floating-input-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.floating-input-group input,
+.floating-input-group select,
+.floating-input-group textarea {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1.5px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #333333;
+    outline: none;
+    background: #ffffff;
+    transition: border-color 0.2s ease;
+}
+
+.floating-input-group input:focus,
+.floating-input-group select:focus,
+.floating-input-group textarea:focus {
+    border-color: #28a745;
+}
+
+.floating-input-group label {
+    position: absolute;
+    top: -10px;
+    left: 14px;
+    background: #ffffff;
+    padding: 0 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #28a745;
+}
+
+.floating-input-group .char-count {
+    position: absolute;
+    top: -10px;
+    right: 14px;
+    background: #ffffff;
+    padding: 0 6px;
+    font-size: 0.75rem;
+    color: #888888;
+}
+
+/* Avatar Circle Display */
+.profile-avatar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.avatar-circle-display {
+    width: 100px;
+    height: 100px;
+    background: #73c778;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: #ffffff;
+    font-size: 3.2rem;
+}
+
+.avatar-edit-badge {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 30px;
+    height: 30px;
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: #333333;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Save / Action Buttons */
+.btn-save-action {
+    width: 100%;
+    background: #28a745;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-save-action:hover {
+    background: #218838;
+}
+
+.btn-save-action.disabled {
+    background: #e0e0e0;
+    color: #888888;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   PHONE VERIFICATION / WHATSAPP TAB STYLES
+   ========================================================================== */
+.phone-confirm-container {
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.phone-confirm-title {
+    color: #110738;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+}
+
+.phone-confirm-desc {
+    color: #555555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.btn-confirm-whatsapp {
+    background-color: #25D366;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-confirm-whatsapp:hover {
+    background-color: #20bd5a;
+}
+
+/* ==========================================================================
+   ADMIN REVIEW NOTIFICATION MODAL
+   ========================================================================== */
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(17, 7, 56, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.custom-modal-backdrop.active {
+    display: flex;
+}
+
+.notice-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 35px 25px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    animation: modalPop 0.25s ease-out;
+}
+
+@keyframes modalPop {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.notice-icon-box {
+    width: 60px;
+    height: 60px;
+    background: rgba(226, 183, 76, 0.15);
+    color: #e2b74c;
+    font-size: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px auto;
+}
+
+/* Responsive Adjustments for Mobile */
+@media (max-width: 850px) {
+    .settings-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .settings-content-card {
+        padding: 25px 20px;
+    }
+}

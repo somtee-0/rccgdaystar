@@ -1,0 +1,524 @@
+/* ==========================================
+   TOP BAR
+========================================== */
+
+.topbar {
+    background: var(--secondary-purple);
+    color: #fff;
+    font-size: 14px;
+}
+
+.topbar-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 48px;
+}
+
+.topbar-left,
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.topbar-left span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.topbar-right a {
+    color: #fff;
+    font-size: 18px;
+    transition: .3s;
+}
+
+.topbar-right a:hover {
+    color: var(--accent-gold);
+}
+
+
+/* ==========================================
+   NAVBAR
+========================================== */
+
+.navbar {
+    background: #fff;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .08);
+}
+
+.nav-wrapper {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 90px;
+
+}
+
+/* LOGO */
+
+.logo {
+
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+
+    height: 95px;
+    width: auto;
+}
+
+/* NAV LINKS */
+
+.nav-links {
+
+    display: flex;
+    align-items: center;
+    gap: 38px;
+
+    list-style: none;
+}
+
+.nav-links a {
+
+    color: var(--dark);
+    font-weight: 600;
+    transition: .3s;
+}
+
+.nav-links a:hover,
+.nav-links .active {
+
+    color: var(--secondary-purple);
+}
+
+/* BUTTON */
+
+.join-btn {
+
+    padding: 13px 30px;
+
+    border-radius: 50px;
+
+    border: 2px solid var(--secondary-purple);
+
+    color: var(--secondary-purple);
+
+    font-weight: 600;
+
+    transition: .35s;
+}
+
+.join-btn:hover {
+
+    background: var(--secondary-purple);
+
+    color: #fff;
+}
+
+/* ==========================================
+   HAMBURGER MENU BUTTON
+========================================== */
+
+.nav-toggle {
+    display: none;
+    /* Hidden on desktop */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 30px;
+    color: var(--primary-color);
+    padding: 8px;
+}
+
+
+/* ==========================================
+   HERO
+========================================== */
+
+.hero {
+
+    padding: 90px 0;
+
+    background: var(--light-lavender);
+}
+
+.hero-grid {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    align-items: center;
+
+    gap: 60px;
+}
+
+.hero-tag {
+
+    display: inline-block;
+
+    color: var(--primary-green);
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+
+    font-size: 72px;
+
+    line-height: 1.05;
+
+    color: var(--secondary-purple);
+
+    margin-bottom: 25px;
+}
+
+.hero p {
+
+    font-size: 18px;
+
+    color: var(--grey);
+
+    max-width: 540px;
+
+    margin-bottom: 35px;
+}
+
+.hero-buttons {
+
+    display: flex;
+
+    gap: 20px;
+}
+
+.hero-image img {
+
+    width: 100%;
+
+    border-radius: 25px;
+
+    box-shadow: var(--shadow-lg);
+}
+
+/* ==========================================================================
+   UPDATED GLOBAL FOOTER LAYOUT
+   ========================================================================== */
+.footer {
+    position: relative;
+    background: radial-gradient(circle at 80% 80%, #2a167a 0%, #110738 100%);
+    color: #ffffff;
+    padding: 60px 0 30px 0;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+}
+
+.footer .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   FOOTER TOP: 3-COLUMN LAYOUT
+   ========================================================================== */
+.footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+    padding-bottom: 40px;
+}
+
+/* Column Dimensions */
+.footer-about {
+    flex: 1 1 300px;
+}
+
+.footer-links,
+.footer-contact {
+    flex: 1 1 250px;
+}
+
+/* --- CONTROL: Church Logo Styling (Brightened) --- */
+.footer-logo {
+    max-width: 280px;
+    height: auto;
+    margin-bottom: 20px;
+    display: block;
+
+    /* This combination injects artificial brightness and a clean white backlight */
+    filter: brightness(1.8) contrast(1.1) drop-shadow(0px 0px 12px rgba(255, 255, 255, 0.4));
+}
+
+.footer-tagline {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    margin-bottom: 25px;
+}
+
+/* Social Buttons - Balanced for Instagram & YouTube */
+.footer-social {
+    display: flex;
+    gap: 15px;
+}
+
+.footer-social a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.footer-social a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+}
+
+/* Link List Styling */
+.footer-links h3,
+.footer-contact h3 {
+    color: #e2b74c;
+    /* Gold header text accent */
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.footer-links ul,
+.footer-contact ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li,
+.footer-contact li {
+    margin-bottom: 15px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-links a {
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+
+.footer-links a i {
+    color: #e2b74c;
+    font-size: 12px;
+}
+
+.footer-links a:hover {
+    color: #e2b74c;
+}
+
+/* Contact Specific Alignment */
+.footer-contact li i {
+    color: #00ff88;
+    /* Green icons matching your mock design */
+    font-size: 18px;
+}
+
+.footer-contact div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Horizontal Partition Divider Rule */
+.footer-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0));
+    margin: 0 0 30px 0;
+}
+
+/* ==========================================================================
+   REVISED SMOOTH WAVE FOOTER ARCHITECTURE
+   ========================================================================== */
+.footer {
+    position: relative;
+    background: #110738;
+    /* Core dark purple theme */
+    color: #ffffff;
+    padding: 140px 0 30px 0;
+    /* Extra space so text sits below the wave */
+    font-family: 'Poppins', sans-serif;
+}
+
+/* The SVG Wave Container Wrapper */
+.footer-top-wave {
+    position: absolute;
+    top: -69px;
+    /* Pulls the wave block up to sit perfectly on top of the footer line */
+    left: 0;
+    width: 100%;
+    height: 70px;
+    /* Cropped container height removes the extra purple blocks */
+    overflow: hidden;
+    line-height: 0;
+    z-index: 1;
+}
+
+.footer-top-wave svg {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Keeps container content layered securely above the background waves */
+.footer .container {
+    position: relative;
+    z-index: 10;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   FOOTER BOTTOM: ROW ALIGNMENT & BRAND SIZING
+   ========================================================================== */
+.footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+    color: #b0b0b0;
+}
+
+.footer-bottom>div {
+    flex: 1 1 250px;
+}
+
+.footer-copy {
+    text-align: left;
+}
+
+/* Central Quote Scripture Pillar */
+.footer-scripture {
+    text-align: center;
+    max-width: 450px;
+}
+
+.footer-scripture p {
+    color: #ffffff;
+    font-style: italic;
+    margin: 0 0 5px 0;
+}
+
+.footer-scripture i {
+    color: #00ff88;
+    margin-right: 5px;
+}
+
+.scripture-ref {
+    color: #00ff88;
+    font-weight: 500;
+}
+
+/* --- CONTROL: SomXpress Custom Branding Section --- */
+.footer-powered {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    /* Spaces the text and graphic beautifully */
+}
+
+.footer-powered .sx-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.sx-branding-logo {
+    width: 55px;
+    height: auto;
+    display: inline-block;
+
+    /* This forces the dark shapes to turn light and injects a bright violet backlight */
+    filter: invert(0.2) brightness(2.5) contrast(1.5) drop-shadow(0px 0px 8px #bc13fe);
+}
+
+/* Responsive breakpoint handling for small mobile layouts */
+@media (max-width: 768px) {
+
+    .footer-top,
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-copy,
+    .footer-powered {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .footer-contact li {
+        justify-content: center;
+    }
+}
+
+/* ==================================
+   Coming Soon / Development Pages
+================================== */
+
+.coming-soon {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.coming-soon h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+.coming-soon p {
+    max-width: 650px;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+
+/* Development Status Badge */
+
+.status-badge {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 14px;
+    margin-bottom: 25px;
+}

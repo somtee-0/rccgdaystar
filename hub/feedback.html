@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Feedback - RCCG Daystar Church Hub</title>
+
+    <!-- Google Fonts & Bootstrap Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Project Stylesheets -->
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/hub.css">
+    <link rel="stylesheet" href="../assets/css/feedback.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+
+<body>
+    <!-- HEADER NAVBAR -->
+    <div data-include-header="hub-includes/header.html"></div>
+
+    <!-- DASHBOARD SECTION -->
+    <section class="profile-dashboard-section">
+        <div class="container">
+            <div class="dashboard-grid">
+
+                <!-- LEFT SIDEBAR -->
+                <aside class="profile-sidebar">
+                    <!-- User Info Box -->
+                    <div class="user-info-card">
+                        <a href="settings.html" class="sidebar-settings-link">
+                            SETTINGS <i class="bi bi-gear-fill"></i>
+                        </a>
+                        <div class="user-avatar-circle">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        <h3 class="user-display-name">Dwayne Henry</h3>
+                        <p class="user-phone-number">07061425461</p>
+                    </div>
+
+                    <!-- Clean Sidebar Menu (Only My Adverts & Feedback) -->
+                    <nav class="sidebar-nav-card">
+                        <a href="adverts.html" class="sidebar-menu-item">
+                            <i class="bi bi-megaphone"></i>
+                            <span>My adverts</span>
+                        </a>
+                        <a href="feedback.html" class="sidebar-menu-item active">
+                            <i class="bi bi-chat-square-text"></i>
+                            <span>Feedback</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <!-- RIGHT CONTENT AREA (EMPTY FEEDBACK STATE) -->
+                <main class="feedback-content-card">
+                    <div class="feedback-empty-icon">
+                        <i class="bi bi-chat-heart"></i>
+                    </div>
+                    <h2 class="empty-feedback-title">There are no Feedback yet.</h2>
+                    <p class="empty-feedback-desc">
+                        Ask your customers to leave feedback about you. Copy the link and send it to them.
+                    </p>
+                    <button type="button" class="btn-copy-link" id="copyFeedbackBtn">
+                        <i class="bi bi-link-45deg"></i> Copy my link
+                    </button>
+                </main>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="../assets/js/feedback.js"></script>
+    <script src="../assets/js/header.js"></script>
+    <!-- Quick Copy Link Script -->
+    <script>
+        document.getElementById('copyFeedbackBtn').addEventListener('click', function () {
+            navigator.clipboard.writeText(window.location.href);
+            const btn = this;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="bi bi-check2"></i> Copied!';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>

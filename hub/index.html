@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- =========================================
+         BASIC META
+    ========================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hub - RCCG Daystar Church</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- =========================================
+         BOOTSTRAP ICONS
+    ========================================== -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- =========================================
+         AOS
+    ========================================== -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+    <!-- =========================================
+         OUR CSS
+    ========================================== -->
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/hub.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+
+<body>
+    <!-- HUB NAVIGATION HEADER -->
+    <header class="hub-header">
+        <div class="hub-header-container">
+            <!-- Left Side: Simple Home Link -->
+            <a href="../index.html" class="hub-logo">
+                <i class="bi bi-house-door"></i> Home
+            </a>
+
+            <div class="hub-auth-links">
+                <!-- VISIBLE WHEN LOGGED OUT -->
+                <div id="nav-guest-state" class="nav-state-container">
+                    <a href="#" class="auth-link open-signin-flow">Sign in</a>
+                    <span class="auth-divider">|</span>
+                    <a href="#" class="auth-link open-register-flow">Registration</a>
+                </div>
+
+                <!-- VISIBLE WHEN LOGGED IN -->
+                <div id="nav-user-state" class="nav-state-container" style="display: none;">
+                    <!-- My Adverts Icon -->
+                    <a href="adverts.html" class="nav-icon-link" data-tooltip="My Adverts">
+                        <i class="bi bi-megaphone"></i>
+                    </a>
+
+                    <!-- My Feedback Icon -->
+                    <a href="feedback.html" id="nav-feedback-btn" class="nav-icon-link" data-tooltip="My Feedback">
+                        <i class="bi bi-chat-square-text"></i>
+                    </a>
+
+                    <!-- User Avatar Circle -->
+                    <div class="profile-hover-wrapper" data-tooltip="My Profile">
+                        <div class="round-avatar-trigger">
+                            <i class="bi bi-person"></i>
+                        </div>
+
+                        <div class="profile-dropdown-menu">
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="bi bi-gear"></i> Settings
+                            </a>
+                            <a href="#" id="auth-logout-btn" class="dropdown-item logout-variant">
+                                <i class="bi bi-box-arrow-right"></i> Log out
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- My Shop Button -->
+                    <a href="shop.html" class="btn-my-shop">MY SHOP</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SEARCH HERO SECTION -->
+    <section class="hub-hero">
+        <div class="hub-hero-content" data-aos="fade-up">
+            <span class="hub-badge">Business Directory</span>
+            <h1>Daystar Church Hub</h1>
+            <p>Connect instantly with trusted entrepreneurs, skilled professionals, and service providers within our
+                community.</p>
+
+            <!-- Jiji-Style Search Bar Container -->
+            <form class="hub-search-box" id="hubSearchForm" action="#" method="GET">
+                <div class="search-input-wrapper">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="hubSearchInput"
+                        placeholder="What service are you looking for today? (e.g., Tech, Laptop, Fashion, Plumber...)">
+                </div>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Smooth Wave Transition sitting flush along bottom edge -->
+        <div class="hub-hero-wave">
+            <svg viewBox="0 0 1440 140" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <path d="M0,20 C350,-20 700,90 1050,25 L1440,0 L1440,140 L0,140 Z" fill="#e2b74c" />
+                <path d="M0,24 C350,24 700,94 1050,29 L1440,4 L1440,140 L0,140 Z" fill="#110738" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- MAIN MARKETPLACE / DIRECTORY BODY -->
+    <section class="hub-marketplace">
+        <div class="container">
+
+            <!-- Evenly Distributed Category Bar -->
+            <div class="hub-categories-stretched" data-aos="fade-up">
+                <a href="#" class="cat-pill active">All Services</a>
+                <a href="#" class="cat-pill">Fashion & Creativity</a>
+                <a href="#" class="cat-pill">Consulting & Legal</a>
+            </div>
+
+            <!-- Highly Visual Vendor Showcase Grid -->
+            <!-- Dynamic Vendor/Advert Grid -->
+            <div class="vendor-grid" id="hubAdvertGrid" data-aos="fade-up" data-aos-delay="100">
+                <!-- Dynamic Advert Cards load here via assets/js/hub-adverts.js -->
+            </div>
+
+        </div> <!-- /container -->
+    </section>
+
+    <!-- STAGE 1: SIGN IN GATEWAY MODAL -->
+    <div class="hub-modal-overlay" id="authModal">
+        <div class="hub-modal-card">
+            <button class="modal-close-btn close-btn">&times;</button>
+            <h2 class="modal-title">Sign in</h2>
+            <div class="modal-form">
+                <div class="input-container">
+                    <button type="button" class="btn-primary-auth" id="triggerEmailPhone">E-mail or phone</button>
+                </div>
+                <p class="modal-switch-text">Don't have an account? <a href="#"
+                        class="highlight-link open-register-flow">Registration</a></p>
+                <p class="modal-terms">By continuing you agree to the <a href="#">Policy and Rules</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- STAGE 2: SIGN IN CREDENTIALS INPUT MODAL -->
+    <div class="hub-modal-overlay" id="credentialModal">
+        <div class="hub-modal-card credential-card">
+            <button class="modal-close-btn close-btn">&times;</button>
+            <div class="modal-lang-tabs">
+                <span class="lang-tab active">English</span>
+            </div>
+            <h3 class="form-context-title">Sign in via email or phone</h3>
+            <form class="modal-form" id="signin-credentials-form">
+                <div class="form-group-field">
+                    <input type="text" placeholder="Email or Phone" required>
+                </div>
+                <div class="form-group-field password-wrapper">
+                    <input type="password" class="loginPassword" placeholder="Password" required>
+                    <i class="bi bi-eye password-toggle-icon"></i>
+                </div>
+                <div class="forgot-password-container">
+                    <a href="#" class="bold-forgot-link">Forgot your password?</a>
+                </div>
+                <button type="submit" class="btn-submit-signin">SIGN IN</button>
+                <p class="modal-switch-text mt-3">Don't have an account? <a href="#"
+                        class="highlight-link open-register-flow">Registration</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- STAGE 3: REGISTRATION GATEWAY MODAL -->
+    <div class="hub-modal-overlay" id="registerGateModal">
+        <div class="hub-modal-card">
+            <button class="modal-close-btn close-btn">&times;</button>
+            <div class="modal-lang-tabs">
+                <span class="lang-tab active">English</span>
+            </div>
+            <h3 class="form-context-title text-center">Register</h3>
+            <div class="modal-form">
+                <div class="input-container">
+                    <button type="button" class="btn-primary-auth" id="triggerRegisterForm">Register via e-mail or
+                        phone</button>
+                </div>
+                <p class="modal-switch-text">Already have an account? <a href="#"
+                        class="highlight-link open-signin-flow">Sign in</a></p>
+                <p class="modal-terms">By continuing you agree to the <a href="#">Policy and Rules</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- STAGE 4: FULL REGISTRATION FORM MODAL -->
+    <div class="hub-modal-overlay" id="registerFormModal">
+        <div class="hub-modal-card credential-card modal-scrollable">
+            <button class="modal-close-btn close-btn">&times;</button>
+            <div class="modal-lang-tabs">
+                <span class="lang-tab active">English</span>
+            </div>
+            <h3 class="form-context-title">Register via email and phone</h3>
+            <form class="modal-form" id="register-full-form">
+                <div class="form-group-field">
+                    <input type="email" placeholder="Enter email" required>
+                </div>
+                <div class="form-group-field password-wrapper">
+                    <input type="password" class="loginPassword" placeholder="Password" required>
+                    <i class="bi bi-eye password-toggle-icon"></i>
+                </div>
+                <small class="field-hint-text">Never disclose your Daystar Hub password to anyone</small>
+
+                <div class="form-group-field mt-2">
+                    <input type="text" placeholder="First name" required>
+                </div>
+                <div class="form-group-field">
+                    <input type="text" placeholder="Last name" required>
+                </div>
+                <div class="form-group-field">
+                    <input type="tel" placeholder="Phone (digits only)" pattern="[0-9]+" required>
+                </div>
+
+                <!-- Custom Rules Checkbox Component -->
+                <div class="checkbox-container">
+                    <label class="custom-checkbox-label">
+                        <input type="checkbox" required checked>
+                        <span class="checkbox-box"><i class="bi bi-check-lg"></i></span>
+                        <span class="checkbox-text">I agree with rules</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-submit-signin active-green">Register</button>
+                <p class="modal-switch-text mt-3">Already have an account? <a href="#"
+                        class="highlight-link open-signin-flow">Sign in</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Include JavaScript assets -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="../assets/js/hub.js"></script>
+    <script src="../assets/js/hub-adverts.js"></script>
+
+</body>
+
+</html>

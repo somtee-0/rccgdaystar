@@ -1,0 +1,758 @@
+/* =========================================
+   MY SHOP / VENDOR ONBOARDING & DASHBOARD
+========================================== */
+
+.shop-setup-section {
+    padding: 50px 0 80px 0;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 80px);
+}
+
+.shop-setup-card,
+.pending-shop-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(17, 7, 56, 0.05);
+    max-width: 850px;
+    margin: 0 auto;
+    border: 1px solid #eaeaea;
+}
+
+.shop-header-title {
+    color: #110738;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+}
+
+.shop-header-subtitle {
+    color: #6c757d;
+    font-size: 0.92rem;
+    margin-bottom: 32px;
+    border-bottom: 1.5px solid #f0f0f0;
+    padding-bottom: 16px;
+    line-height: 1.5;
+}
+
+.form-section-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #110738;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* FORM LAYOUT & INPUTS */
+.form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group-custom {
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-custom label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #222222;
+    margin-bottom: 8px;
+}
+
+.form-group-custom input,
+.form-group-custom select,
+.form-group-custom textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    border: 1.5px solid #dcdcdc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    background-color: #fcfcfc;
+    color: #333333;
+}
+
+.form-group-custom input:focus,
+.form-group-custom select:focus,
+.form-group-custom textarea:focus {
+    border-color: #110738;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(17, 7, 56, 0.1);
+}
+
+/* UPLOAD DROPZONE */
+.image-upload-box {
+    border: 2px dashed #cccccc;
+    border-radius: 12px;
+    padding: 36px 20px;
+    text-align: center;
+    background-color: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-upload-box:hover {
+    border-color: #110738;
+    background-color: #f8f6ff;
+}
+
+.image-upload-box i {
+    font-size: 2.8rem;
+    color: #110738;
+    margin-bottom: 10px;
+}
+
+.image-upload-box input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.upload-hint {
+    font-size: 0.82rem;
+    color: #888888;
+    margin-top: 6px;
+}
+
+.sensitive-notice-box {
+    background-color: #fffdf5;
+    border-left: 4px solid #e2b74c;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 24px 0;
+    font-size: 0.88rem;
+    color: #4a3d00;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.sensitive-notice-box i {
+    font-size: 1.3rem;
+    color: #e2b74c;
+    flex-shrink: 0;
+}
+
+.btn-submit-shop {
+    width: 100%;
+    background-color: #110738;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-submit-shop:hover {
+    background-color: #230e66;
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   STATE 2: PENDING VERIFICATION CARD
+========================================== */
+.pending-banner-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.pending-badge {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #873800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-pill-warning {
+    background: #fffbe6;
+    color: #d46b08;
+    border: 1px solid #ffe58f;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pending-notice-banner {
+    background-color: #f7f9fc;
+    border-left: 4px solid #110738;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 14px;
+    font-size: 0.9rem;
+    color: #333333;
+    line-height: 1.5;
+}
+
+.pending-notice-banner i {
+    font-size: 1.4rem;
+    color: #110738;
+    flex-shrink: 0;
+}
+
+.shop-profile-details {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.btn-edit-profile {
+    background: transparent;
+    border: 1.5px solid #110738;
+    color: #110738;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-edit-profile:hover {
+    background-color: #110738;
+    color: #ffffff;
+}
+
+.dev-switcher-bar {
+    margin-top: 32px;
+    padding: 14px 18px;
+    background: #fafafa;
+    border: 1px dashed #cccccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-dev-toggle.approve {
+    background: #110738;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+/* =========================================
+   STATE 3: VENDOR PROFILE (WHITE THEME)
+========================================== */
+
+.vendor-profile-wrapper {
+    background-color: #f8f9fa;
+    padding-bottom: 40px;
+}
+
+.vendor-profile-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e1e1e1;
+    overflow: hidden;
+    max-width: 850px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* 1. EDITABLE COVER BANNER & LOGO AVATAR */
+.vendor-cover-wrapper {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(135deg, #110738 0%, #2a1575 50%, #e2b74c 100%);
+    background-size: cover;
+    background-position: center;
+    transition: background 0.3s ease;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(226, 183, 76, 0.15), transparent 70%);
+}
+
+.btn-change-banner {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(17, 7, 56, 0.75);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.btn-change-banner:hover {
+    background: #110738;
+    border-color: #e2b74c;
+    color: #e2b74c;
+}
+
+.vendor-logo-avatar {
+    position: absolute;
+    bottom: -35px;
+    left: 30px;
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background: #110738;
+    color: #e2b74c;
+    border: 4px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 2;
+    overflow: hidden;
+}
+
+.vendor-logo-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* 2. HEADER INFO SECTION */
+.vendor-header-body {
+    padding: 50px 30px 24px 30px;
+}
+
+.vendor-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+
+.vendor-name {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #110738;
+    margin: 0;
+}
+
+.badge-verified {
+    background: #e6f4ea;
+    color: #137333;
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.vendor-rating-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+.vendor-rating-row .stars {
+    color: #f4b400;
+}
+
+.rating-score {
+    color: #222222;
+    font-weight: 700;
+}
+
+.review-count {
+    color: #666666;
+    font-size: 0.88rem;
+}
+
+.vendor-tagline {
+    font-size: 0.98rem;
+    color: #555555;
+    margin: 6px 0 12px 0;
+    font-weight: 500;
+}
+
+.vendor-meta-pills {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666666;
+    font-size: 0.88rem;
+}
+
+.text-gold {
+    color: #d4a017;
+}
+
+.meta-dot {
+    color: #cccccc;
+}
+
+/* SECTIONS & DIVIDERS */
+.section-divider {
+    border: none;
+    border-top: 1px solid #f0f0f0;
+    margin: 0;
+}
+
+.vendor-section {
+    padding: 24px 30px;
+}
+
+.section-header-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-header-between .section-title {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #110738;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-go-to-adverts {
+    color: #110738;
+    background: #f0f0f5;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-go-to-adverts:hover {
+    background: #110738;
+    color: #ffffff;
+}
+
+.about-text {
+    font-size: 0.92rem;
+    color: #444444;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* 4. CONTACT BUTTONS GRID */
+.contact-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.btn-contact {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-contact:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn-whatsapp {
+    background: #25d366;
+    color: #ffffff;
+}
+
+.btn-call {
+    background: #110738;
+    color: #ffffff;
+}
+
+.btn-email {
+    background: #f0f0f0;
+    color: #222222;
+    border: 1px solid #e0e0e0;
+}
+
+.btn-website {
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    color: #222222;
+}
+
+/* 5. SOCIAL LINKS */
+.social-links-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.social-badge {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: #f8f9fa;
+    color: #444444;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #e1e1e1;
+    transition: all 0.2s ease;
+}
+
+.social-badge:hover {
+    background: #110738;
+    color: #ffffff;
+    border-color: #110738;
+}
+
+/* 6. BUSINESS ADVERTS (EMPTY & POPULATED STATES) */
+.empty-adverts-placeholder {
+    border: 2px dashed #e0e0e0;
+    border-radius: 12px;
+    padding: 35px 20px;
+    background: #fafafa;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-empty {
+    font-size: 2.5rem;
+    color: #cccccc;
+    margin-bottom: 10px;
+}
+
+.empty-title {
+    font-weight: 700;
+    color: #110738;
+    font-size: 1rem;
+    margin: 0 0 4px 0;
+}
+
+.empty-subtitle {
+    font-size: 0.85rem;
+    color: #777777;
+    margin: 0 0 18px 0;
+    max-width: 360px;
+}
+
+.btn-post-first-ad {
+    background: #110738;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-post-first-ad:hover {
+    background: #230e66;
+}
+
+.vendor-adverts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+}
+
+.advert-card-item {
+    height: 140px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f0f0f0;
+    border: 1px solid #e8e8e8;
+    position: relative;
+}
+
+.advert-card-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 7. REVIEWS LIST */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.review-card {
+    background: #fafafa;
+    padding: 16px 20px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    border-left: 4px solid #e2b74c;
+}
+
+.review-stars {
+    color: #f4b400;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+}
+
+.review-comment {
+    font-size: 0.92rem;
+    color: #333333;
+    margin: 0 0 6px 0;
+    font-style: italic;
+    line-height: 1.45;
+}
+
+.review-author {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #777777;
+}
+
+/* 8. BUSINESS DETAILS GRID */
+.details-specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    background: #fcfcfc;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #eeeeee;
+}
+
+.spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.spec-label {
+    font-size: 0.78rem;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.spec-value {
+    font-size: 0.95rem;
+    color: #110738;
+    font-weight: 700;
+}
+
+/* =========================================
+   POPUP MODAL OVERLAY STYLES
+========================================== */
+.custom-notice-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(17, 7, 56, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notice-card {
+    animation: popupScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popupScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* RESPONSIVE BREAKPOINTS */
+@media (max-width: 768px) {
+    .form-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .shop-profile-details {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .vendor-header-body,
+    .vendor-section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .contact-buttons-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

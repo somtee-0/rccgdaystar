@@ -1,0 +1,43 @@
+/* ==========================================
+   RCCG DAYSTAR CHURCH DESIGN SYSTEM
+========================================== */
+
+:root {
+
+    /* Primary Colors */
+
+    --primary-green: #1F8A3E;
+
+    --secondary-purple: #2E1A72;
+
+    --accent-gold: #F4B400;
+
+    --light-lavender: #F1EEFB;
+
+    --soft-green: #E8F3EA;
+
+    --white: #FFFFFF;
+
+    --dark: #1A1A1A;
+
+    --grey: #666666;
+
+    /* Shadows */
+
+    --shadow-sm: 0 5px 15px rgba(0, 0, 0, .08);
+
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, .12);
+
+    /* Border Radius */
+
+    --radius-sm: 8px;
+
+    --radius-md: 18px;
+
+    --radius-lg: 50px;
+
+    /* Transition */
+
+    --transition: .35s ease;
+
+}

@@ -1,0 +1,186 @@
+/* =====================================================
+   TABLET & MOBILE DEVICES (992px and below)
+===================================================== */
+@media (max-width: 992px) {
+
+    /* ----------------------------
+       Navigation & Layout Adjustments
+    ---------------------------- */
+    .nav-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    /* Completely hide the big desktop button layout */
+    .join-btn {
+        display: none !important;
+    }
+
+    /* Position the 3 lines cleanly on the far right side */
+    .nav-toggle {
+        display: block !important;
+        font-size: 28px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+        /* Keeps the toggle on top of the menu */
+    }
+
+    /* Transform menu into a clean right-side purple drawer */
+    .nav-links {
+        display: flex !important;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 25px;
+
+        position: fixed;
+        top: 0;
+        right: -300px;
+        /* Hidden off-screen to the right by default */
+        width: 280px;
+        height: 100vh;
+
+        background: #3b2273;
+        /* Your brand's deep purple background style */
+        padding: 100px 30px 40px 30px;
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+        transition: cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+        z-index: 1000;
+    }
+
+    /* Smooth Slide-in Effect when clicked */
+    .nav-links.active {
+        right: 0;
+    }
+
+    /* Make standard menu text links clean white */
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links li a {
+        color: #ffffff !important;
+        font-size: 18px;
+        font-weight: 500;
+        display: block;
+        width: 100%;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Active link indication inside purple drawer */
+    .nav-links li a.active {
+        color: #22c55e !important;
+        /* Standout green accent */
+    }
+
+    /* Style the new mobile menu 'Join Us' link button layout */
+    .mobile-only-join {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    /* Notice the long name below — this is the secret sauce that wins the color fight! */
+    .nav-links li a.mobile-join-link {
+        display: inline-block !important;
+        background: #ffffff !important;
+        color: #3b2273 !important;
+        /* Forces text to purple */
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 700;
+        width: 90%;
+        border-bottom: none !important;
+    }
+
+    /* ----------------------------
+       Top Bar
+    ---------------------------- */
+    .topbar-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    /* ----------------------------
+       Hero Section
+    ---------------------------- */
+    .hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 48px;
+    }
+}
+
+/* =====================================================
+   DESKTOP ONLY CODE LAYER (993px and above)
+===================================================== */
+@media (min-width: 993px) {
+
+    /* Hide the mobile item variant completely when rendering wide screens */
+    .mobile-only-join {
+        display: none !important;
+    }
+}
+
+/* ----------------------------
+       Footer
+    ---------------------------- */
+
+.footer-grid {
+    grid-template-columns: 1fr;
+    gap: 45px;
+}
+
+.footer-bottom-content {
+    flex-direction: column;
+    text-align: center;
+}
+
+.footer-logo {
+    margin: auto;
+}
+
+.footer-about {
+    text-align: center;
+}
+
+.footer-social {
+    justify-content: center;
+}
+
+/* =====================================================
+   MOBILE DEVICES (600px and below)
+===================================================== */
+
+@media (max-width:600px) {
+
+    /* ----------------------------
+       Footer
+    ---------------------------- */
+
+    .footer {
+        text-align: center;
+    }
+
+    .footer h3::after {
+        margin: auto;
+        margin-top: 10px;
+    }
+
+    .footer ul li {
+        justify-content: center;
+    }
+
+    .footer-signature {
+        justify-content: center;
+    }
+
+}
