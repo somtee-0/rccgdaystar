@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal Trigger Buttons
     const triggerEmailPhone = document.getElementById('triggerEmailPhone');
     if (triggerEmailPhone) {
         triggerEmailPhone.addEventListener('click', () => {
@@ -79,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Close Modals
     document.querySelectorAll('.close-btn, .modal-close-btn').forEach(btn => {
         btn.addEventListener('click', closeAllModals);
     });
@@ -90,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Eye Toggle Engine for Passwords
     document.querySelectorAll('.password-toggle-icon').forEach(icon => {
         icon.addEventListener('click', function () {
             const inputField = this.parentElement.querySelector('input');
@@ -111,18 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
         signinForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const emailInput = signinForm.querySelector('input[type="email"]') || document.getElementById('signinEmail');
+            const inputField = signinForm.querySelector('input[type="email"], input[type="text"], input:not([type="password"])') || document.getElementById('signinEmail');
             const passwordInput = signinForm.querySelector('input[type="password"]') || document.getElementById('signinPassword');
 
-            // Force lowercase to protect against mobile auto-capitalize email bugs
-            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+            const emailOrPhone = inputField ? inputField.value.trim().toLowerCase() : '';
             const password = passwordInput ? passwordInput.value : '';
 
             try {
                 const response = await fetch('https://rccgdaystar-backend.onrender.com/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ emailOrPhone, password })
                 });
 
                 const data = await response.json();
@@ -141,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     refreshNavigationUI();
                     window.location.reload();
                 } else {
-                    alert(data.error || 'Invalid email or password');
+                    alert(data.error || 'Invalid email/phone or password');
                 }
             } catch (error) {
                 console.error('Login network error:', error);
@@ -157,24 +153,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const nameInput = registerForm.querySelector('input[name="name"]') || document.getElementById('registerName');
             const emailInput = registerForm.querySelector('input[type="email"]') || document.getElementById('registerEmail');
+            const phoneInput = registerForm.querySelector('input[type="tel"]') || registerForm.querySelector('input[name="phone"]') || document.getElementById('registerPhone');
             const passwordInput = registerForm.querySelector('input[type="password"]') || document.getElementById('registerPassword');
 
             const name = nameInput ? nameInput.value.trim() : '';
-            // Force lowercase to match database schema rule
             const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+            const phone = phoneInput ? phoneInput.value.trim() : '';
             const password = passwordInput ? passwordInput.value : '';
 
             try {
                 const response = await fetch('https://rccgdaystar-backend.onrender.com/api/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, password })
+                    body: JSON.stringify({ name, email, phone, password })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    // AUTO-LOGIN right after registering so user hits the dashboard seamlessly!
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('currentUserEmail', email);
                     localStorage.setItem('currentUser', name || email);
