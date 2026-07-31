@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         vendorAdvertsGrid.innerHTML = ''; // Clear default markup
 
         try {
-            const response = await fetch('http://localhost:5000/api/adverts');
+            const response = await fetch('https://rccgdaystar-backend.onrender.com/api/adverts');
             const savedAds = await response.json();
 
             savedAds.forEach(ad => {
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 try {
-                    const response = await fetch('http://localhost:5000/api/adverts', {
+                    const response = await fetch('https://rccgdaystar-backend.onrender.com/api/adverts', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -256,7 +256,7 @@ function updateAdvertCount() {
 async function deleteAdvert(adId) {
     if (confirm('Are you sure you want to delete this advert listing?')) {
         try {
-            const response = await fetch(`http://localhost:5000/api/adverts/${adId}`, {
+            const response = await fetch(`https://rccgdaystar-backend.onrender.com/api/adverts/${adId}`, {
                 method: 'DELETE'
             });
 
