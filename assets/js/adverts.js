@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
     const USER_SHOP_KEY = `shopData_${currentUser}`;
     const USER_LOGO_KEY = `shopLogo_${currentUser}`;
-    const USER_ADVERTS_KEY = `userAdverts_${currentUser}`;
 
     // --- DOM REFERENCES ---
     const toggleAdFormBtn = document.getElementById('toggleAdFormBtn');
@@ -37,16 +36,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 2. LOAD EXISTING ADVERTS ON PAGE START ---
-    function loadExistingAdverts() {
+    // --- 2. LOAD EXISTING ADVERTS FROM MONGO DB ---
+    async function loadExistingAdverts() {
         if (!vendorAdvertsGrid) return;
         vendorAdvertsGrid.innerHTML = ''; // Clear default markup
 
-        const savedAds = JSON.parse(localStorage.getItem(USER_ADVERTS_KEY)) || [];
-        savedAds.forEach(ad => {
-            renderAdvertCard(ad, false);
-        });
-        updateAdvertCount();
+        try {
+            const response = await fetch('http://localhost:5000/api/adverts');
+            const savedAds = await response.json();
+
+            savedAds.forEach(ad => {
+                const formattedAd = {
+                    id: ad._id,
+                    title: ad.title,
+                    price: ad.price || 'Contact for price',
+                    desc: ad.description || ad.desc,
+                    image: ad.imageUrl || ad.image || 'https://via.placeholder.com/300'
+                };
+                renderAdvertCard(formattedAd, false);
+            });
+            updateAdvertCount();
+        } catch (error) {
+            console.error('Error fetching adverts from database:', error);
+        }
     }
 
     // --- 3. TOGGLE FORM VISIBILITY ---
@@ -84,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderPreviews() {
+        if (!imagePreviewContainer) return;
         imagePreviewContainer.innerHTML = '';
         uploadedFiles.forEach((file, idx) => {
             const imgUrl = URL.createObjectURL(file);
@@ -104,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderPreviews();
     };
 
-    // Helper: Convert File object to Base64 String for persistent LocalStorage saving
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -114,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. FORM SUBMISSION ---
+    // --- 5. FORM SUBMISSION (POST to MongoDB) ---
     if (createAdvertForm) {
         createAdvertForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -128,28 +140,43 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = document.getElementById('adPrice').value || 'Contact for price';
             const desc = document.getElementById('adDesc').value;
 
-            let currentSavedAds = JSON.parse(localStorage.getItem(USER_ADVERTS_KEY)) || [];
-
-            // Convert images and save persistently
             for (let index = 0; index < uploadedFiles.length; index++) {
                 const base64Img = await fileToBase64(uploadedFiles[index]);
 
-                const newAd = {
-                    id: 'ad-' + Date.now() + '-' + index,
-                    user: currentUser,
+                const advertPayload = {
                     title: uploadedFiles.length > 1 ? `${title} (${index + 1})` : title,
+                    description: desc,
                     price: price,
-                    desc: desc,
-                    image: base64Img
+                    imageUrl: base64Img,
+                    category: 'General'
                 };
 
-                currentSavedAds.unshift(newAd); // Save to JS Array
-                renderAdvertCard(newAd, true); // Render to DOM
-            }
+                try {
+                    const response = await fetch('http://localhost:5000/api/adverts', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(advertPayload)
+                    });
 
-            // Sync persistently to LocalStorage so Vendor Card (shop.html) can read it
-            localStorage.setItem(USER_ADVERTS_KEY, JSON.stringify(currentSavedAds));
-            localStorage.setItem('userAdverts', JSON.stringify(currentSavedAds)); // Global fallback
+                    if (response.ok) {
+                        const savedAd = await response.json();
+                        const formattedAd = {
+                            id: savedAd._id,
+                            title: savedAd.title,
+                            price: savedAd.price || price,
+                            desc: savedAd.description,
+                            image: savedAd.imageUrl
+                        };
+                        renderAdvertCard(formattedAd, true);
+                    } else {
+                        alert('Failed to save advert to database.');
+                    }
+                } catch (error) {
+                    console.error('Error posting advert:', error);
+                }
+            }
 
             updateAdvertCount();
             resetFormState();
@@ -225,23 +252,25 @@ function updateAdvertCount() {
     if (catCountAll) catCountAll.innerText = `(${total})`;
 }
 
-// Global Delete Function (Cleans up both DOM & LocalStorage)
-function deleteAdvert(adId) {
+// Global Delete Function (Cleans up DOM & MongoDB)
+async function deleteAdvert(adId) {
     if (confirm('Are you sure you want to delete this advert listing?')) {
-        const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
-        const USER_ADVERTS_KEY = `userAdverts_${currentUser}`;
+        try {
+            const response = await fetch(`http://localhost:5000/api/adverts/${adId}`, {
+                method: 'DELETE'
+            });
 
-        // 1. Remove from DOM
-        const adCard = document.querySelector(`[data-id="${adId}"]`);
-        if (adCard) {
-            adCard.remove();
-            updateAdvertCount();
+            if (response.ok) {
+                const adCard = document.querySelector(`[data-id="${adId}"]`);
+                if (adCard) {
+                    adCard.remove();
+                    updateAdvertCount();
+                }
+            } else {
+                alert('Failed to delete advert from database.');
+            }
+        } catch (error) {
+            console.error('Error deleting advert:', error);
         }
-
-        // 2. Remove from LocalStorage
-        let savedAds = JSON.parse(localStorage.getItem(USER_ADVERTS_KEY)) || [];
-        savedAds = savedAds.filter(ad => ad.id !== adId);
-        localStorage.setItem(USER_ADVERTS_KEY, JSON.stringify(savedAds));
-        localStorage.setItem('userAdverts', JSON.stringify(savedAds));
     }
 }
