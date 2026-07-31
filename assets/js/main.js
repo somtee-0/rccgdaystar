@@ -20,7 +20,7 @@ if (playBtn && closeBtn && heroVideo && youtubeVideo) {
         heroVideo.classList.add("show");
 
         // Change this line in your main.js:
-        youtubeVideo.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&rel=0&cc_load_policy=0`;
+        youtubeVideo.src = `https://www.youtube-nocookie.com/embed/${videoID}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3`;
     });
 
     closeBtn.addEventListener("click", () => {

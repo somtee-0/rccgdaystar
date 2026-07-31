@@ -178,3 +178,22 @@
 
     background: #ff2b2b;
 }
+
+/* YouTube UI Cropper Wrapper */
+.yt-crop-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+/* Enlarges the iframe to push YouTube header/footer outside the box */
+.yt-crop-container iframe {
+    position: absolute;
+    top: -60px;
+    left: -2px;
+    width: 100%;
+    height: calc(100% + 120px);
+    border: none;
+}
