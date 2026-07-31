@@ -140,6 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = document.getElementById('adPrice').value || 'Contact for price';
             const desc = document.getElementById('adDesc').value;
 
+            // Dynamically capture the selected category from the dropdown form element
+            const categorySelect = document.getElementById('adCategory');
+            const category = categorySelect ? categorySelect.value : 'General';
+
             for (let index = 0; index < uploadedFiles.length; index++) {
                 const base64Img = await fileToBase64(uploadedFiles[index]);
 
@@ -148,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     description: desc,
                     price: price,
                     imageUrl: base64Img,
-                    category: 'General'
+                    category: category
                 };
 
                 try {

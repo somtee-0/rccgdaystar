@@ -2,8 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initHubAdvertsAndSearch();
 });
 
-function initHubAdvertsAndSearch() {
-    const allAdverts = getAllVendorAdverts();
+async function initHubAdvertsAndSearch() {
+    // Fetch adverts from MongoDB backend with local storage & fallback support
+    const allAdverts = await getAllVendorAdverts();
 
     // Initial Display: Render 4 random adverts on page load
     renderAdvertGrid(getRandomAdverts(allAdverts, 4));
@@ -105,10 +106,31 @@ function initHubAdvertsAndSearch() {
     }
 }
 
-// --- LOCAL STORAGE SCANNER ---
-function getAllVendorAdverts() {
+// --- DATABASE & LOCAL STORAGE HYBRID SCANNER ---
+async function getAllVendorAdverts() {
     let combinedAdverts = [];
 
+    // 1. Fetch live adverts from MongoDB Backend API
+    try {
+        const response = await fetch('https://rccgdaystar-backend.onrender.com/api/adverts');
+        if (response.ok) {
+            const serverAds = await response.json();
+            serverAds.forEach(ad => {
+                combinedAdverts.push({
+                    title: ad.title,
+                    vendorName: ad.vendorName || 'Verified Vendor',
+                    category: ad.category || 'Verified Partner',
+                    description: ad.description || ad.desc || '',
+                    imageUrl: ad.imageUrl || ad.image || '../assets/images/default-ad.jpg',
+                    vendorId: ad.vendorId || ad._id || 'vendor'
+                });
+            });
+        }
+    } catch (err) {
+        console.warn('Backend server unreachable, falling back to local storage cache.', err);
+    }
+
+    // 2. Scan LocalStorage for cached/offline items
     try {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
