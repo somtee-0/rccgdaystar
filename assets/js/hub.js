@@ -114,15 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailInput = signinForm.querySelector('input[type="email"]') || document.getElementById('signinEmail');
             const passwordInput = signinForm.querySelector('input[type="password"]') || document.getElementById('signinPassword');
 
-            const email = emailInput ? emailInput.value : '';
+            // Force lowercase to protect against mobile auto-capitalize email bugs
+            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
             const password = passwordInput ? passwordInput.value : '';
 
             try {
                 const response = await fetch('https://rccgdaystar-backend.onrender.com/api/auth/login', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
 
@@ -160,26 +159,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailInput = registerForm.querySelector('input[type="email"]') || document.getElementById('registerEmail');
             const passwordInput = registerForm.querySelector('input[type="password"]') || document.getElementById('registerPassword');
 
-            const name = nameInput ? nameInput.value : '';
-            const email = emailInput ? emailInput.value : '';
+            const name = nameInput ? nameInput.value.trim() : '';
+            // Force lowercase to match database schema rule
+            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
             const password = passwordInput ? passwordInput.value : '';
 
             try {
                 const response = await fetch('https://rccgdaystar-backend.onrender.com/api/auth/register', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, password })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert('Registration successful! You can now log in.');
+                    // AUTO-LOGIN right after registering so user hits the dashboard seamlessly!
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('currentUserEmail', email);
+                    localStorage.setItem('currentUser', name || email);
+
+                    isLoggedIn = true;
                     registerForm.reset();
                     closeAllModals();
-                    if (authModal) authModal.classList.add('active');
+                    refreshNavigationUI();
+                    window.location.reload();
                 } else {
                     alert(data.error || 'Registration failed.');
                 }
