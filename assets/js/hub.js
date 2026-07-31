@@ -104,27 +104,89 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // -------------------------------------------------------------
-    // 3. AUTH FORM SUBMISSIONS
+    // 3. AUTH FORM SUBMISSIONS (CONNECTED TO BACKEND)
     // -------------------------------------------------------------
     const signinForm = document.getElementById('signin-credentials-form') || document.querySelector('#credentialModal form');
     if (signinForm) {
-        signinForm.addEventListener('submit', (e) => {
+        signinForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            localStorage.setItem('isLoggedIn', 'true');
-            isLoggedIn = true;
-            closeAllModals();
-            refreshNavigationUI();
+
+            const emailInput = signinForm.querySelector('input[type="email"]') || document.getElementById('signinEmail');
+            const passwordInput = signinForm.querySelector('input[type="password"]') || document.getElementById('signinPassword');
+
+            const email = emailInput ? emailInput.value : '';
+            const password = passwordInput ? passwordInput.value : '';
+
+            try {
+                const response = await fetch('https://rccgdaystar-backend.onrender.com/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('currentUserEmail', data.user.email);
+                    localStorage.setItem('currentUser', data.user.name || data.user.email);
+
+                    if (data.token) {
+                        localStorage.setItem('authToken', data.token);
+                    }
+
+                    isLoggedIn = true;
+                    closeAllModals();
+                    refreshNavigationUI();
+                    window.location.reload();
+                } else {
+                    alert(data.error || 'Invalid email or password');
+                }
+            } catch (error) {
+                console.error('Login network error:', error);
+                alert('Unable to connect to the server. Please try again.');
+            }
         });
     }
 
     const registerForm = document.getElementById('register-full-form') || document.querySelector('#registerFormModal form');
     if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            localStorage.setItem('isLoggedIn', 'true');
-            isLoggedIn = true;
-            closeAllModals();
-            refreshNavigationUI();
+
+            const nameInput = registerForm.querySelector('input[name="name"]') || document.getElementById('registerName');
+            const emailInput = registerForm.querySelector('input[type="email"]') || document.getElementById('registerEmail');
+            const passwordInput = registerForm.querySelector('input[type="password"]') || document.getElementById('registerPassword');
+
+            const name = nameInput ? nameInput.value : '';
+            const email = emailInput ? emailInput.value : '';
+            const password = passwordInput ? passwordInput.value : '';
+
+            try {
+                const response = await fetch('https://rccgdaystar-backend.onrender.com/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Registration successful! You can now log in.');
+                    registerForm.reset();
+                    closeAllModals();
+                    if (authModal) authModal.classList.add('active');
+                } else {
+                    alert(data.error || 'Registration failed.');
+                }
+            } catch (error) {
+                console.error('Registration network error:', error);
+                alert('Unable to connect to the server.');
+            }
         });
     }
 
@@ -132,8 +194,12 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('currentUserEmail');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('authToken');
             isLoggedIn = false;
             refreshNavigationUI();
+            window.location.reload();
         });
     }
 
