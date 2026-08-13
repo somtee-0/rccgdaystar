@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <i class="bi bi-shop-window" style="font-size: 3.5rem; color: #cbd5e1; display: block; margin-bottom: 16px;"></i>
                             <h2 style="color: #110738; font-size: 1.5rem; margin-bottom: 8px;">Shop Not Found</h2>
                             <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">The vendor profile you are trying to view does not exist or has not been registered.</p>
-                            <a href="hub.html" style="background: #110738; color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block;">Return to Hub</a>
+                            <a href="../hub.html" style="background: #110738; color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block;">Return to Hub</a>
                         </div>
                     `;
                 }
