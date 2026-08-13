@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const inputField = signinForm.querySelector('input[type="email"], input[type="text"], input:not([type="password"])') || document.getElementById('signinEmail');
             const passwordInput = signinForm.querySelector('input[type="password"]') || document.getElementById('signinPassword');
 
-            const emailOrPhone = inputField ? inputField.value.trim().toLowerCase() : '';
+            const emailOrPhone = inputField ? inputField.value.trim() : '';
             const password = passwordInput ? passwordInput.value : '';
 
             try {
@@ -151,15 +151,19 @@ document.addEventListener('DOMContentLoaded', () => {
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const nameInput = registerForm.querySelector('input[name="name"]') || document.getElementById('registerName');
-            const emailInput = registerForm.querySelector('input[type="email"]') || document.getElementById('registerEmail');
-            const phoneInput = registerForm.querySelector('input[type="tel"]') || registerForm.querySelector('input[name="phone"]') || document.getElementById('registerPhone');
-            const passwordInput = registerForm.querySelector('input[type="password"]') || document.getElementById('registerPassword');
+            const emailInput = registerForm.querySelector('input[type="email"]');
+            const passwordInput = registerForm.querySelector('input[type="password"]');
+            const textInputs = registerForm.querySelectorAll('input[type="text"]');
+            const phoneInput = registerForm.querySelector('input[type="tel"]');
 
-            const name = nameInput ? nameInput.value.trim() : '';
             const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
-            const phone = phoneInput ? phoneInput.value.trim() : '';
             const password = passwordInput ? passwordInput.value : '';
+
+            const firstName = textInputs[0] ? textInputs[0].value.trim() : '';
+            const lastName = textInputs[1] ? textInputs[1].value.trim() : '';
+            const name = `${firstName} ${lastName}`.trim();
+
+            const phone = phoneInput ? phoneInput.value.trim() : '';
 
             try {
                 const response = await fetch('https://rccgdaystar-backend.onrender.com/api/auth/register', {
