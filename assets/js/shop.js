@@ -168,13 +168,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
         if (requestedVendorId && requestedVendorId !== currentUser) {
-            const vendorShopData = JSON.parse(localStorage.getItem(`shopData_${requestedVendorId}`)) || {
-                name: "Vendor Showcase",
-                category: "Verified Partner",
-                location: "Lagos",
-                experience: "1 Year",
-                memberSince: "2026"
-            };
+            const vendorShopData = JSON.parse(localStorage.getItem(`shopData_${requestedVendorId}`));
+
+            // CLEAN 404 STATE: If the vendor does not exist in storage, display clean error instead of a fake dummy profile
+            if (!vendorShopData) {
+                if (isShopPage) {
+                    const mainContainer = document.querySelector('.shop-hero-card')?.parentElement || document.body;
+                    mainContainer.innerHTML = `
+                        <div style="text-align: center; padding: 80px 20px; font-family: inherit;">
+                            <i class="bi bi-shop-window" style="font-size: 3.5rem; color: #cbd5e1; display: block; margin-bottom: 16px;"></i>
+                            <h2 style="color: #110738; font-size: 1.5rem; margin-bottom: 8px;">Shop Not Found</h2>
+                            <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">The vendor profile you are trying to view does not exist or has not been registered.</p>
+                            <a href="hub.html" style="background: #110738; color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block;">Return to Hub</a>
+                        </div>
+                    `;
+                }
+                return;
+            }
 
             const vendorBanner = localStorage.getItem(`shopBanner_${requestedVendorId}`);
             const vendorLogo = localStorage.getItem(`shopLogo_${requestedVendorId}`);
@@ -297,26 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- SHOP OWNER CLICK ROUTER ---
-    function handleShopOwnerRouting() {
-        const shopData = JSON.parse(localStorage.getItem(USER_SHOP_KEY));
-
-        // If currently on adverts.html, navigate to shop.html
-        if (!window.location.pathname.includes('shop.html')) {
-            window.location.href = 'shop.html';
-            return;
-        }
-
-        // If already on shop.html, scroll to appropriate card state
-        if (shopData && shopData.status === 'verified') {
-            if (state3Card) state3Card.scrollIntoView({ behavior: 'smooth' });
-        } else if (shopData && shopData.status === 'pending') {
-            if (state2Card) state2Card.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            if (state1Card) state1Card.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-
     function showNoticeModal(title, message) {
         const modal = document.getElementById('shopReviewModal');
         const modalTitle = document.getElementById('modalNoticeTitle');
@@ -339,20 +329,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- 11. GLOBAL SHOP OWNER BADGE ROUTER ---
 function handleShopOwnerClick() {
-    // 1. If user clicks from adverts.html, redirect them to shop.html first
     if (!window.location.pathname.includes('shop.html')) {
         window.location.href = 'shop.html';
         return;
     }
 
-    // 2. Fetch current user shop data
-    const shopData = JSON.parse(localStorage.getItem(USER_SHOP_KEY));
+    const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
+    const shopData = JSON.parse(localStorage.getItem(`shopData_${currentUser}`));
 
     const state1Card = document.getElementById('state1_RegistrationCard');
     const state2Card = document.getElementById('state2_PendingCard');
     const state3Card = document.getElementById('state3_VerifiedCard');
 
-    // 3. Navigate/scroll to the proper section based on status
     if (shopData && shopData.status === 'verified') {
         if (state1Card) state1Card.style.display = 'none';
         if (state2Card) state2Card.style.display = 'none';
@@ -368,7 +356,6 @@ function handleShopOwnerClick() {
             state2Card.scrollIntoView({ behavior: 'smooth' });
         }
     } else {
-        // Unregistered vendor: Show setup form
         if (state2Card) state2Card.style.display = 'none';
         if (state3Card) state3Card.style.display = 'none';
         if (state1Card) {
@@ -400,8 +387,12 @@ if (feedbackForm) {
     feedbackForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
-        const USER_FEEDBACK_KEY = `userFeedbacks_${currentUser}`;
+        // Check if viewing a public vendor profile via URL parameter, otherwise default to logged-in user
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedVendorId = urlParams.get('vendor');
+        const targetUser = requestedVendorId || localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
+
+        const USER_FEEDBACK_KEY = `userFeedbacks_${targetUser}`;
 
         const newFeedback = {
             id: 'fb-' + Date.now(),
@@ -421,29 +412,4 @@ if (feedbackForm) {
         feedbackForm.reset();
         feedbackModal.style.display = 'none';
     });
-}
-
-// --- SHOP OWNER BADGE ROUTER ---
-function handleShopOwnerRouting() {
-    // 1. If clicked from adverts.html or another page, redirect to shop.html
-    if (!window.location.pathname.includes('shop.html')) {
-        window.location.href = 'shop.html';
-        return;
-    }
-
-    // 2. If on shop.html, scroll to appropriate setup card
-    const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser');
-    const shopData = currentUser ? JSON.parse(localStorage.getItem(`shopData_${currentUser}`)) : null;
-
-    const state1Card = document.getElementById('state1_RegistrationCard');
-    const state2Card = document.getElementById('state2_PendingCard');
-    const state3Card = document.getElementById('state3_VerifiedCard');
-
-    if (shopData && shopData.status === 'verified') {
-        if (state3Card) state3Card.scrollIntoView({ behavior: 'smooth' });
-    } else if (shopData && shopData.status === 'pending') {
-        if (state2Card) state2Card.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        if (state1Card) state1Card.scrollIntoView({ behavior: 'smooth' });
-    }
 }

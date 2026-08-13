@@ -9,23 +9,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 1. Dynamically update user profile name and phone card (Replaces hardcoded Dwayne Henry)
 function loadUserProfileInfo() {
-    const profileNameEl = document.querySelector('.user-profile-name, h3'); // Targets profile card name
-    const profilePhoneEl = document.querySelector('.user-profile-phone, small'); // Targets profile card phone
+    // Targets the exact classes used in your sidebar user-info-card
+    const nameHeading = document.querySelector('.user-display-name');
+    const phonePara = document.querySelector('.user-phone-number');
 
     // Retrieve real user info stored during registration/login
-    const currentUserName = localStorage.getItem('currentUser') || 'Church Member';
+    const currentUserName = localStorage.getItem('currentUser') || localStorage.getItem('currentUserName') || 'Church Member';
     const currentUserPhone = localStorage.getItem('currentUserPhone') || localStorage.getItem('userPhone') || 'No phone provided';
-
-    // If your profile card layout uses specific elements, update them safely:
-    // This looks for the specific name heading and phone number text inside the sidebar profile card
-    const nameHeading = document.querySelector('.dashboard-profile-card h3, .profile-card h3') || profileNameEl;
-    const phoneSmall = document.querySelector('.dashboard-profile-card small, .profile-card small') || profilePhoneEl;
 
     if (nameHeading) {
         nameHeading.textContent = currentUserName;
     }
-    if (phoneSmall) {
-        phoneSmall.innerHTML = `<i class="bi bi-telephone-fill" style="font-size: 0.75rem; margin-right: 4px;"></i> ${currentUserPhone}`;
+    if (phonePara) {
+        phonePara.textContent = currentUserPhone;
     }
 }
 
