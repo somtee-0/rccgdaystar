@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const shopData = {
                 user: currentUser,
                 name: document.getElementById('bizNameInput').value,
-                ownerName: document.getElementById('bizOwnerInput').value, // Grabs the separate owner name input
+                ownerName: document.getElementById('bizOwnerInput')?.value,
                 category: document.getElementById('bizCategoryInput').value,
                 location: document.getElementById('bizLocationInput').value,
                 phone: document.getElementById('bizPhoneInput').value,
