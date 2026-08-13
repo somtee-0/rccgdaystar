@@ -205,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (titleEl) titleEl.textContent = vendorShopData.name;
             if (tagEl) tagEl.textContent = vendorShopData.category;
-            if (ownerEl) ownerEl.textContent = vendorShopData.name;
 
             const locEl = document.getElementById('verifiedLocation') || document.getElementById('displayShopLocation');
             if (locEl) locEl.textContent = vendorShopData.location;
