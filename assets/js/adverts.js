@@ -61,11 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 3. TOGGLE FORM VISIBILITY ---
+    // --- 3. TOGGLE FORM VISIBILITY WITH VENDOR CHECK ---
     if (toggleAdFormBtn && uploadAdFormCard) {
         toggleAdFormBtn.addEventListener('click', () => {
-            uploadAdFormCard.style.display =
-                uploadAdFormCard.style.display === 'none' ? 'block' : 'none';
+            const registeredVendor = localStorage.getItem(USER_SHOP_KEY);
+
+            if (registeredVendor) {
+                // IF REGISTERED: Toggle form visibility
+                uploadAdFormCard.style.display =
+                    uploadAdFormCard.style.display === 'none' ? 'block' : 'none';
+            } else {
+                // IF NOT REGISTERED: Alert and route to registration page
+                alert("Please register your vendor profile first before posting adverts.");
+                window.location.href = "shop.html?register=true";
+            }
         });
     }
 
@@ -276,5 +285,20 @@ async function deleteAdvert(adId) {
         } catch (error) {
             console.error('Error deleting advert:', error);
         }
+    }
+}
+
+// --- GLOBAL SHOP OWNER ROUTING HANDLER (Fixes the badge onclick error) ---
+function handleShopOwnerRouting() {
+    const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
+    const USER_SHOP_KEY = `shopData_${currentUser}`;
+    const registeredVendor = localStorage.getItem(USER_SHOP_KEY);
+
+    if (registeredVendor) {
+        // If registered, go directly to their shop storefront view
+        window.location.href = "shop.html";
+    } else {
+        // If not registered, go to the shop page with the registration section open
+        window.location.href = "shop.html?register=true";
     }
 }

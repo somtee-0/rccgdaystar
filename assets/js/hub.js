@@ -253,19 +253,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-function showNotification(message) {
-    const toast = document.getElementById('customToast');
-    const msgSpan = document.getElementById('toastMessage');
-
-    if (toast && msgSpan) {
-        msgSpan.textContent = message;
-        toast.style.display = 'block';
-
-        if (window.toastTimeout) clearTimeout(window.toastTimeout);
-
-        window.toastTimeout = setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3000);
-    }
-}
