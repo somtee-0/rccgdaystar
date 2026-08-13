@@ -28,18 +28,18 @@ function loadUserProfileInfo() {
 // 2. Load and render dynamic feedbacks or empty states
 function loadVendorFeedbacks() {
     // Get logged-in user identifier
-    const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';[cite: 6]
-    const USER_FEEDBACK_KEY = `userFeedbacks_${currentUser}`;[cite: 6]
+    const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
+    const USER_FEEDBACK_KEY = `userFeedbacks_${currentUser}`;
 
-    // Fetch feedback array[cite: 6]
-    const feedbackList = JSON.parse(localStorage.getItem(USER_FEEDBACK_KEY)) || [];[cite: 6]
+    // Fetch feedback array
+    const feedbackList = JSON.parse(localStorage.getItem(USER_FEEDBACK_KEY)) || [];
 
-    // Target your existing right content card[cite: 6]
+    // Target your existing right content card
     const mainCard = document.querySelector('.feedback-content-card');
 
     if (!mainCard) return;
 
-    // If feedback exists, render feedback items inside the card[cite: 6]
+    // If feedback exists, render feedback items inside the card
     if (feedbackList.length > 0) {
         mainCard.innerHTML = `
             <div class="feedback-header-bar" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color, #e2e8f0);">
@@ -69,7 +69,7 @@ function loadVendorFeedbacks() {
             </div>
         `;
 
-        // Re-attach copy button listener if replaced[cite: 6]
+        // Re-attach copy button listener if replaced
         const copyBtn = document.getElementById('copyFeedbackBtn');
         if (copyBtn) {
             copyBtn.addEventListener('click', function () {
