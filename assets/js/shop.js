@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const shopData = {
                 user: currentUser,
                 name: document.getElementById('bizNameInput').value,
-                ownerName: document.getElementById('bizOwnerInput')?.value || currentUser, // Captures custom name or falls back to email/user ID
+                ownerName: document.getElementById('bizOwnerInput').value, // Grabs the separate owner name input
                 category: document.getElementById('bizCategoryInput').value,
                 location: document.getElementById('bizLocationInput').value,
                 phone: document.getElementById('bizPhoneInput').value,
@@ -201,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.getElementById('displayShopTitle') || document.getElementById('verifiedBizName');
             const tagEl = document.getElementById('displayShopTagline') || document.getElementById('verifiedCategory');
             const ownerEl = document.getElementById('detailOwnerName');
+            if (ownerEl) ownerEl.textContent = shopData.ownerName || 'N/A';
 
             if (titleEl) titleEl.textContent = vendorShopData.name;
             if (tagEl) tagEl.textContent = vendorShopData.category;
@@ -243,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.getElementById('displayShopTitle');
             const tagEl = document.getElementById('displayShopTagline');
             const ownerEl = document.getElementById('detailOwnerName');
+            if (ownerEl) ownerEl.textContent = shopData.ownerName || 'N/A';
 
             if (titleEl) titleEl.textContent = "Church Hub Vendor";
             if (tagEl) tagEl.textContent = "Official Vendor Storefront & Product Catalog";
@@ -259,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.getElementById('displayShopTitle');
             const tagEl = document.getElementById('displayShopTagline');
             const ownerEl = document.getElementById('detailOwnerName');
+            if (ownerEl) ownerEl.textContent = shopData.ownerName || 'N/A';
 
             if (titleEl) titleEl.textContent = shopData.name;
             if (tagEl) tagEl.textContent = shopData.category;
@@ -281,6 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.getElementById('displayShopTitle');
             const tagEl = document.getElementById('displayShopTagline');
             const ownerEl = document.getElementById('detailOwnerName');
+            if (ownerEl) ownerEl.textContent = shopData.ownerName || 'N/A';
 
             if (titleEl) titleEl.textContent = shopData.name;
             if (tagEl) tagEl.textContent = shopData.category;
