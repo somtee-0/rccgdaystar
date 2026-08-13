@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('currentUserEmail', data.user.email);
                     localStorage.setItem('currentUser', data.user.name || data.user.email);
+                    localStorage.setItem('currentUserPhone', data.user.phone || 'No phone provided');
 
                     if (data.token) {
                         localStorage.setItem('authToken', data.token);

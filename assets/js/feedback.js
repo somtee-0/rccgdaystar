@@ -9,9 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 1. Dynamically update user profile name and phone card (Replaces hardcoded Dwayne Henry)
 function loadUserProfileInfo() {
-    // Targets the exact classes used in your sidebar user-info-card
-    const nameHeading = document.querySelector('.user-display-name');
-    const phonePara = document.querySelector('.user-phone-number');
+    // Targets both IDs and classes to ensure it catches the elements successfully
+    const nameHeading = document.getElementById('profileDisplayName') || document.querySelector('.user-display-name');
+    const phonePara = document.getElementById('profileDisplayPhone') || document.querySelector('.user-phone-number');
 
     // Retrieve real user info stored during registration/login
     const currentUserName = localStorage.getItem('currentUser') || localStorage.getItem('currentUserName') || 'Church Member';
