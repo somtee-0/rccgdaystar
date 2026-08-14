@@ -491,17 +491,81 @@
 }
 
 @media (max-width: 850px) {
-    .marketplace-body-layout {
-        grid-template-columns: 1fr;
+
+    /* 1. Prevent outer container overflow on mobile screens */
+    .adverts-wrapper.container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden;
     }
 
-    .shop-owner-badge {
-        border-left: none;
-        border-top: 1px solid #eee;
-        padding-left: 0;
-        padding-top: 15px;
+    /* 2. Fit the hero card nicely inside smaller viewports */
+    .shop-hero-card {
+        padding: 16px !important;
+        width: 100% !important;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .shop-hero-main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
         width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
+    }
+
+    /* 3. Allow metadata items and dividers to wrap naturally without forcing side scroll */
+    .shop-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 8px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .shop-meta-row .meta-divider {
+        display: none;
+        /* Hide vertical lines on mobile so wrapped items look clean */
+    }
+
+    /* 4. Adjust owner badge layout for mobile */
+    .shop-owner-badge {
+        border-left: none !important;
+        border-top: 1px solid #eee;
+        padding-left: 0 !important;
+        padding-top: 15px;
+        width: 100% !important;
+        box-sizing: border-box;
+        align-items: flex-start !important;
+    }
+
+    /* 5. Stack the marketplace body (Sidebar + Grid) vertically */
+    .marketplace-body-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+    .shop-sidebar {
+        width: 100% !important;
+    }
+
+    .shop-items-section {
+        width: 100% !important;
+    }
+
+    /* 6. Form elements and grids stack vertically on mobile */
+    .form-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .image-preview-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
