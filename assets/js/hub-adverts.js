@@ -117,7 +117,7 @@ async function getAllVendorAdverts() {
             const serverAds = await response.json();
             serverAds.forEach(ad => {
                 combinedAdverts.push({
-                    title: ad.title,
+                    title: ad.title || ad.adTitle,
                     vendorName: ad.vendorName || 'Verified Vendor',
                     category: ad.category || 'Verified Partner',
                     description: ad.description || ad.desc || '',
@@ -130,55 +130,59 @@ async function getAllVendorAdverts() {
         console.warn('Backend server unreachable, falling back to local storage cache.', err);
     }
 
-    // 2. Scan LocalStorage for cached/offline items
+    // 2. Scan LocalStorage thoroughly for any shop data or saved adverts
     try {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (!key) continue;
 
-            try {
-                const itemRaw = localStorage.getItem(key);
-                if (!itemRaw) continue;
+            const itemRaw = localStorage.getItem(key);
+            if (!itemRaw) continue;
 
+            try {
                 const parsed = JSON.parse(itemRaw);
 
-                if (Array.isArray(parsed)) {
+                // Check if this key holds shop data containing adverts/products
+                if (key.startsWith('shopData_') && parsed) {
+                    const shopName = parsed.name || parsed.ownerName || 'Verified Vendor';
+                    const shopId = parsed.user || parsed.id || key.replace('shopData_', '');
+                    const shopCategory = parsed.category || 'Verified Partner';
+
+                    const shopAds = parsed.adverts || parsed.ads || parsed.products || [];
+                    if (Array.isArray(shopAds)) {
+                        shopAds.forEach(ad => {
+                            if (ad && (ad.title || ad.adTitle || ad.name)) {
+                                combinedAdverts.push({
+                                    title: ad.title || ad.adTitle || ad.name,
+                                    vendorName: shopName,
+                                    category: ad.category || shopCategory,
+                                    description: ad.description || ad.details || '',
+                                    imageUrl: ad.imageUrl || ad.image || '../assets/images/default-ad.jpg',
+                                    vendorId: shopId
+                                });
+                            }
+                        });
+                    }
+                }
+                // General array or object fallback scan
+                else if (Array.isArray(parsed)) {
                     parsed.forEach(item => {
                         if (item && (item.title || item.adTitle || item.name)) {
                             combinedAdverts.push(normalizeAdvert(item, 'Verified Vendor'));
                         }
                     });
                 }
-                else if (typeof parsed === 'object' && parsed !== null) {
-                    const adsList = parsed.adverts || parsed.ads || parsed.products || parsed.items || [];
-                    if (Array.isArray(adsList) && adsList.length > 0) {
-                        adsList.forEach(item => {
-                            combinedAdverts.push(normalizeAdvert(item, parsed.name || 'Verified Vendor', parsed));
-                        });
-                    }
-                    else if (parsed.title || parsed.adTitle) {
-                        combinedAdverts.push(normalizeAdvert(parsed, parsed.vendorName || 'Verified Vendor'));
-                    }
-                }
-            } catch (err) {
-                // Ignore plain non-JSON strings cleanly
+            } catch (e) {
+                // Skip non-JSON values
             }
         }
     } catch (err) {
-        console.error("Error scanning localStorage:", err);
+        console.error("Error scanning localStorage for adverts:", err);
     }
 
-    // --- FALLBACK DEMO DATA ---
-    if (!advertsToDisplay || advertsToDisplay.length === 0) {
-        container.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: #ffffff; border-radius: 12px; border: 1px dashed #cbd5e1;">
-                <i class="bi bi-search" style="font-size: 2rem; color: #94a3b8;"></i>
-                <h5 style="margin-top: 12px; color: #110738; font-weight: 600;">No Adverts Found</h5>
-                <p style="color: #64748b; font-size: 0.9rem; margin: 0;">Try searching for another service, consultant, or product.</p>
-            </div>
-        `;
-        return;
-    }
+    // --- FALLBACK DEMO DATA REMOVED ---
+    // combinedAdverts will stay empty if no live or local storage adverts exist,
+    // which cleanly triggers your empty state view.
 
     return combinedAdverts;
 }
