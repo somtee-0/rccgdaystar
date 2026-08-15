@@ -242,7 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.getElementById('displayShopTitle') || document.getElementById('verifiedBizName');
             const tagEl = document.getElementById('displayShopTagline') || document.getElementById('verifiedCategory');
             const ownerEl = document.getElementById('detailOwnerName');
-            if (ownerEl) ownerEl.textContent = vendorShopData?.ownerName || vendorShopData?.name || 'N/A';
+            if (ownerEl) {
+                ownerEl.textContent = vendorShopData?.ownerName || vendorShopData?.name || requestedVendorId || 'N/A';
+            }
 
             if (titleEl) titleEl.textContent = vendorShopData.name;
             if (tagEl) tagEl.textContent = vendorShopData.category;
@@ -299,6 +301,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (document.getElementById('verifiedBizName')) document.getElementById('verifiedBizName').textContent = shopData.name;
             if (document.getElementById('detailBizName')) document.getElementById('detailBizName').textContent = shopData.name;
+
+            // ADD THIS LINE TO FIX THE OWNER NAME:
+            const detailOwnerEl = document.getElementById('detailOwnerName');
+            if (detailOwnerEl) detailOwnerEl.textContent = shopData.ownerName || 'N/A';
+
             if (document.getElementById('verifiedLocation')) document.getElementById('verifiedLocation').textContent = shopData.location;
             if (document.getElementById('verifiedCategory')) document.getElementById('verifiedCategory').textContent = shopData.category;
 
