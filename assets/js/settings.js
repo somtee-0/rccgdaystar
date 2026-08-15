@@ -20,22 +20,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
     const USER_SHOP_KEY = `shopData_${currentUser}`;
 
-    // Check multiple storage locations for the registered name (removed the 'User Name' fake fallback)
     const savedShopData = JSON.parse(localStorage.getItem(USER_SHOP_KEY)) || {};
-    const registeredFullName = savedShopData.ownerName || savedShopData.fullName || savedShopData.name || localStorage.getItem('currentUserName') || '';
 
-    // Populate Personal Details Inputs dynamically with registered name
+    // Intelligently check every possible storage location where the registered name might live
+    const registeredFullName = savedShopData.ownerName || savedShopData.fullName || savedShopData.name || savedShopData.user || '';
+
+    // Populate Personal Details Inputs dynamically
     const firstNameInput = document.getElementById('settingsFirstName');
     const lastNameInput = document.getElementById('settingsLastName');
     const birthdayInput = document.querySelector('#personal-form input[type="date"]');
     const sexSelect = document.querySelector('#personal-form select');
     const emailInput = document.getElementById('settingsEmailInput');
 
-    if (registeredFullName) {
+    if (registeredFullName && registeredFullName !== 'default_user') {
         const nameParts = registeredFullName.trim().split(' ');
         if (firstNameInput) firstNameInput.value = nameParts[0] || '';
         if (lastNameInput) lastNameInput.value = nameParts.slice(1).join(' ') || '';
     } else {
+        // If no name is stored yet, leave fields completely empty for user input instead of showing placeholder text
         if (firstNameInput) firstNameInput.value = '';
         if (lastNameInput) lastNameInput.value = '';
     }
