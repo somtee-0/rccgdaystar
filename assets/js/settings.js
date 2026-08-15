@@ -19,23 +19,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Load Logged-in User Data Dynamically
     const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
     const USER_SHOP_KEY = `shopData_${currentUser}`;
-    const savedShopData = JSON.parse(localStorage.getItem(USER_SHOP_KEY)) || {};
 
-    // Populate Personal Details Inputs dynamically
+    // Check multiple storage locations for the registered name as fallback
+    const savedShopData = JSON.parse(localStorage.getItem(USER_SHOP_KEY)) || {};
+    const registeredFullName = savedShopData.ownerName || savedShopData.name || localStorage.getItem('currentUserName') || 'User Name';
+
+    // Populate Personal Details Inputs dynamically with registered name
     const firstNameInput = document.getElementById('settingsFirstName');
     const lastNameInput = document.getElementById('settingsLastName');
     const birthdayInput = document.querySelector('#personal-form input[type="date"]');
     const sexSelect = document.querySelector('#personal-form select');
     const emailInput = document.getElementById('settingsEmailInput');
 
-    if (savedShopData.ownerName) {
-        const nameParts = savedShopData.ownerName.trim().split(' ');
+    if (registeredFullName) {
+        const nameParts = registeredFullName.trim().split(' ');
         if (firstNameInput) firstNameInput.value = nameParts[0] || '';
         if (lastNameInput) lastNameInput.value = nameParts.slice(1).join(' ') || '';
     }
+
     if (birthdayInput && savedShopData.birthday) birthdayInput.value = savedShopData.birthday;
     if (sexSelect && savedShopData.sex) sexSelect.value = savedShopData.sex;
-    if (emailInput && savedShopData.email) emailInput.value = savedShopData.email;
+    if (emailInput && (savedShopData.email || currentUser)) emailInput.value = savedShopData.email || currentUser;
 
     // Populate Business Details Inputs
     const bizNameInput = document.querySelector('#business-form input[type="text"]');
