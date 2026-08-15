@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const savedShopData = JSON.parse(localStorage.getItem(USER_SHOP_KEY)) || {};
 
-    // Intelligently check every possible storage location where the registered name might live
-    const registeredFullName = savedShopData.ownerName || savedShopData.fullName || savedShopData.name || savedShopData.user || '';
+    // Intelligently check every possible storage location including direct currentUserName
+    const registeredFullName = localStorage.getItem('currentUserName') || savedShopData.ownerName || savedShopData.fullName || savedShopData.name || savedShopData.user || '';
 
     // Populate Personal Details Inputs dynamically
     const firstNameInput = document.getElementById('settingsFirstName');
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (birthdayInput && savedShopData.birthday) birthdayInput.value = savedShopData.birthday;
-    if (sexSelect && savedShopData.sex) sexSelect.value = savedShopData.sex;
+    if (sexSelect && savedShopData.sex) sexSelect.value = sexSelect.value;
     if (emailInput && (savedShopData.email || currentUser)) emailInput.value = savedShopData.email || currentUser;
 
     // Populate Business Details Inputs
