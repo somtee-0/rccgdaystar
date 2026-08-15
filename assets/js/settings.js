@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
     const USER_SHOP_KEY = `shopData_${currentUser}`;
 
-    // Check multiple storage locations for the registered name as fallback
+    // Check multiple storage locations for the registered name (removed the 'User Name' fake fallback)
     const savedShopData = JSON.parse(localStorage.getItem(USER_SHOP_KEY)) || {};
-    const registeredFullName = savedShopData.ownerName || savedShopData.name || localStorage.getItem('currentUserName') || 'User Name';
+    const registeredFullName = savedShopData.ownerName || savedShopData.fullName || savedShopData.name || localStorage.getItem('currentUserName') || '';
 
     // Populate Personal Details Inputs dynamically with registered name
     const firstNameInput = document.getElementById('settingsFirstName');
@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const nameParts = registeredFullName.trim().split(' ');
         if (firstNameInput) firstNameInput.value = nameParts[0] || '';
         if (lastNameInput) lastNameInput.value = nameParts.slice(1).join(' ') || '';
+    } else {
+        if (firstNameInput) firstNameInput.value = '';
+        if (lastNameInput) lastNameInput.value = '';
     }
 
     if (birthdayInput && savedShopData.birthday) birthdayInput.value = savedShopData.birthday;
