@@ -169,33 +169,15 @@ async function getAllVendorAdverts() {
     }
 
     // --- FALLBACK DEMO DATA ---
-    if (combinedAdverts.length === 0) {
-        combinedAdverts = [
-            {
-                title: "iPhone 15 Pro Max (256GB)",
-                vendorName: "SomXpress Gadgets",
-                category: "Tech & Gadgets",
-                description: "Brand new factory unlocked iPhone, physical SIM + eSIM. 1-year warranty included.",
-                imageUrl: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80",
-                vendorId: "somxpress"
-            },
-            {
-                title: "Corporate Legal Advisory & Litigation",
-                vendorName: "Adukeade Consult",
-                category: "Consulting & Legal Services",
-                description: "Contract drafting, business incorporation, regulatory compliance, and legal counsel.",
-                imageUrl: "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=600&q=80",
-                vendorId: "adukeade-legal"
-            },
-            {
-                title: "Bespoke Executive Apparel",
-                vendorName: "Adukeade Fashion",
-                category: "Fashion & Tailoring",
-                description: "Custom tailored suits, traditional attire, and premium corporate wear.",
-                imageUrl: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=600&q=80",
-                vendorId: "adukeade"
-            }
-        ];
+    if (!advertsToDisplay || advertsToDisplay.length === 0) {
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; background: #ffffff; border-radius: 12px; border: 1px dashed #cbd5e1;">
+                <i class="bi bi-search" style="font-size: 2rem; color: #94a3b8;"></i>
+                <h5 style="margin-top: 12px; color: #110738; font-weight: 600;">No Adverts Found</h5>
+                <p style="color: #64748b; font-size: 0.9rem; margin: 0;">Try searching for another service, consultant, or product.</p>
+            </div>
+        `;
+        return;
     }
 
     return combinedAdverts;
