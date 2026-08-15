@@ -156,12 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let index = 0; index < uploadedFiles.length; index++) {
                 const base64Img = await fileToBase64(uploadedFiles[index]);
 
+                // Inside Section 5 of adverts.js, update your advertPayload definition:
                 const advertPayload = {
                     title: uploadedFiles.length > 1 ? `${title} (${index + 1})` : title,
                     description: desc,
                     price: price,
                     imageUrl: base64Img,
-                    category: category
+                    category: category,
+                    vendorId: currentUser // <-- THIS STAMPS THE OWNER'S ID/EMAIL TO MONGODB
                 };
 
                 try {

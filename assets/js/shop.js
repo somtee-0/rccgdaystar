@@ -122,13 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let validAdverts = [];
 
         try {
-            // Fetch live adverts from MongoDB Backend API
             const response = await fetch('https://rccgdaystar-backend.onrender.com/api/adverts');
             if (response.ok) {
                 const serverAds = await response.json();
                 validAdverts = serverAds.filter(ad => {
-                    const matchVendor = ad.vendorId === targetUser || ad.user === targetUser || ad._id === targetUser;
-                    return matchVendor;
+                    // Strict check: Must match the vendorId or user stamp exactly
+                    return ad.vendorId === targetUser || ad.user === targetUser;
                 });
             }
         } catch (err) {
