@@ -265,6 +265,6 @@ function handleHubAdvertClick(vendorId) {
             alert('Please sign in to view vendor details.');
         }
     } else {
-        window.location.href = `shop.html?vendor=${vendorId}`;
+        window.location.href = `shop.html?vendor=${encodeURIComponent(vendorId)}`
     }
 }

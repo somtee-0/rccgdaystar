@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const isShopPage = window.location.pathname.includes('shop.html');
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
-        if (requestedVendorId && requestedVendorId !== currentUser) {
+        if (requestedVendorId && requestedVendorId === currentUser) {
             let vendorShopData = JSON.parse(localStorage.getItem(`shopData_${requestedVendorId}`));
 
             // If not found in localStorage, attempt to fetch vendor details from MongoDB backend API
