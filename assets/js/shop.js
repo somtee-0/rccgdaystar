@@ -119,6 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!activeAdvertsGrid || !emptyAdvertsBox) return;
 
+        // Fallback: If targetUser isn't passed, check URL params directly
+        const urlParams = new URLSearchParams(window.location.search);
+        const effectiveTarget = targetUser || urlParams.get('vendor');
+
         let validAdverts = [];
 
         try {
@@ -126,8 +130,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 const serverAds = await response.json();
                 validAdverts = serverAds.filter(ad => {
-                    // Strict check: Must match the vendorId or user stamp exactly
-                    return ad.vendorId === targetUser || ad.user === targetUser;
+                    if (!ad) return false;
+                    // Strict check: Must match the vendorId, user stamp, email, or name exactly if effectiveTarget exists
+                    if (effectiveTarget) {
+                        return ad.vendorId === effectiveTarget ||
+                            ad.user === effectiveTarget ||
+                            ad.email === effectiveTarget ||
+                            ad.vendorName === effectiveTarget;
+                    }
+                    return false;
                 });
             }
         } catch (err) {
@@ -135,15 +146,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Fallback to localStorage if backend didn't yield items for this specific vendor
-        if (validAdverts.length === 0) {
+        if (validAdverts.length === 0 && effectiveTarget) {
             const allAdverts =
-                JSON.parse(localStorage.getItem(`userAdverts_${targetUser}`)) ||
+                JSON.parse(localStorage.getItem(`userAdverts_${effectiveTarget}`)) ||
                 JSON.parse(localStorage.getItem('userAdverts')) ||
                 JSON.parse(localStorage.getItem('adverts')) || [];
 
             validAdverts = allAdverts.filter(ad => {
                 if (!ad) return false;
-                const belongsToUser = !ad.user || ad.user === targetUser || ad.vendorId === targetUser;
+                const belongsToUser = !ad.user || ad.user === effectiveTarget || ad.vendorId === effectiveTarget || ad.email === effectiveTarget;
                 const hasImage = ad.image || ad.imageUrl || ad.img || ad.src || typeof ad === 'string';
                 return belongsToUser && hasImage;
             });
@@ -183,7 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const isShopPage = window.location.pathname.includes('shop.html');
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
-        if (requestedVendorId && requestedVendorId === currentUser) {
+        // Removed the currentUser restriction so any user/guest can view any vendor's card
+        if (requestedVendorId) {
             let vendorShopData = JSON.parse(localStorage.getItem(`shopData_${requestedVendorId}`));
 
             // If not found in localStorage, attempt to fetch vendor details from MongoDB backend API

@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 0. USER & LOCALSTORAGE KEYS ---
+    // --- 0. USER & LOCALSTORAGE KEYS (SESSION SCOPED) ---
     const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
     const USER_SHOP_KEY = `shopData_${currentUser}`;
     const USER_LOGO_KEY = `shopLogo_${currentUser}`;
+    const userAdvertsKey = `userAdverts_${currentUser}`;
 
     // --- DOM REFERENCES ---
     const toggleAdFormBtn = document.getElementById('toggleAdFormBtn');
@@ -36,29 +37,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 2. LOAD EXISTING ADVERTS FROM MONGO DB ---
+    // --- 2. LOAD EXISTING ADVERTS (STRICT SESSION & MONGODB ISOLATION) ---
     async function loadExistingAdverts() {
         if (!vendorAdvertsGrid) return;
         vendorAdvertsGrid.innerHTML = ''; // Clear default markup
 
+        let loadedAny = false;
+
         try {
             const response = await fetch('https://rccgdaystar-backend.onrender.com/api/adverts');
-            const savedAds = await response.json();
+            if (response.ok) {
+                const savedAds = await response.json();
+                // Filter strictly by the current logged-in user session
+                const userAds = savedAds.filter(ad => ad.vendorId === currentUser || ad.user === currentUser);
 
-            savedAds.forEach(ad => {
-                const formattedAd = {
-                    id: ad._id,
-                    title: ad.title,
-                    price: ad.price || 'Contact for price',
-                    desc: ad.description || ad.desc,
-                    image: ad.imageUrl || ad.image || 'https://via.placeholder.com/300'
-                };
-                renderAdvertCard(formattedAd, false);
-            });
-            updateAdvertCount();
+                userAds.forEach(ad => {
+                    const formattedAd = {
+                        id: ad._id,
+                        title: ad.title,
+                        price: ad.price || 'Contact for price',
+                        desc: ad.description || ad.desc,
+                        image: ad.imageUrl || ad.image || 'https://via.placeholder.com/300'
+                    };
+                    renderAdvertCard(formattedAd, false);
+                    loadedAny = true;
+                });
+            }
         } catch (error) {
             console.error('Error fetching adverts from database:', error);
         }
+
+        // Fallback or secondary check to local storage scoped key if backend returns nothing for this user
+        if (!loadedAny) {
+            const localAds = JSON.parse(localStorage.getItem(userAdvertsKey)) || [];
+            localAds.forEach(ad => {
+                renderAdvertCard(ad, false);
+            });
+        }
+
+        updateAdvertCount();
     }
 
     // --- 3. TOGGLE FORM VISIBILITY WITH VENDOR CHECK ---
@@ -135,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. FORM SUBMISSION (POST to MongoDB) ---
+    // --- 5. FORM SUBMISSION (POST to MongoDB & Scoped Local Storage) ---
     if (createAdvertForm) {
         createAdvertForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -153,17 +170,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const categorySelect = document.getElementById('adCategory');
             const category = categorySelect ? categorySelect.value : 'General';
 
+            let currentLocalAds = JSON.parse(localStorage.getItem(userAdvertsKey)) || [];
+
             for (let index = 0; index < uploadedFiles.length; index++) {
                 const base64Img = await fileToBase64(uploadedFiles[index]);
 
-                // Inside Section 5 of adverts.js, update your advertPayload definition:
                 const advertPayload = {
                     title: uploadedFiles.length > 1 ? `${title} (${index + 1})` : title,
                     description: desc,
                     price: price,
                     imageUrl: base64Img,
                     category: category,
-                    vendorId: currentUser // <-- THIS STAMPS THE OWNER'S ID/EMAIL TO MONGODB
+                    vendorId: currentUser // <-- STAMPS THE OWNER'S ID/EMAIL
                 };
 
                 try {
@@ -185,13 +203,26 @@ document.addEventListener('DOMContentLoaded', () => {
                             image: savedAd.imageUrl
                         };
                         renderAdvertCard(formattedAd, true);
+                        currentLocalAds.push(formattedAd);
                     } else {
                         alert('Failed to save advert to database.');
                     }
                 } catch (error) {
-                    console.error('Error posting advert:', error);
+                    console.error('Error posting advert, saving to local backup:', error);
+                    const fallbackAd = {
+                        id: 'local-' + Date.now() + index,
+                        title: advertPayload.title,
+                        price: advertPayload.price,
+                        desc: advertPayload.description,
+                        image: advertPayload.imageUrl
+                    };
+                    renderAdvertCard(fallbackAd, true);
+                    currentLocalAds.push(fallbackAd);
                 }
             }
+
+            // Save strictly to the session-scoped localStorage key
+            localStorage.setItem(userAdvertsKey, JSON.stringify(currentLocalAds));
 
             updateAdvertCount();
             resetFormState();
@@ -267,40 +298,48 @@ function updateAdvertCount() {
     if (catCountAll) catCountAll.innerText = `(${total})`;
 }
 
-// Global Delete Function (Cleans up DOM & MongoDB)
+// Global Delete Function (Cleans up DOM, Backend, & Scoped Local Storage)
 async function deleteAdvert(adId) {
     if (confirm('Are you sure you want to delete this advert listing?')) {
-        try {
-            const response = await fetch(`https://rccgdaystar-backend.onrender.com/api/adverts/${adId}`, {
-                method: 'DELETE'
-            });
+        const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
+        const userAdvertsKey = `userAdverts_${currentUser}`;
 
-            if (response.ok) {
-                const adCard = document.querySelector(`[data-id="${adId}"]`);
-                if (adCard) {
-                    adCard.remove();
-                    updateAdvertCount();
-                }
-            } else {
-                alert('Failed to delete advert from database.');
+        try {
+            // If it's a backend ID, delete via API
+            if (!adId.toString().startsWith('local-')) {
+                await fetch(`https://rccgdaystar-backend.onrender.com/api/adverts/${adId}`, {
+                    method: 'DELETE'
+                });
             }
+
+            // Remove from DOM
+            const adCard = document.querySelector(`[data-id="${adId}"]`);
+            if (adCard) {
+                adCard.remove();
+                updateAdvertCount();
+            }
+
+            // Clean up session-scoped local storage cache
+            let localAds = JSON.parse(localStorage.getItem(userAdvertsKey)) || [];
+            localAds = localAds.filter(ad => ad.id !== adId);
+            localStorage.setItem(userAdvertsKey, JSON.stringify(localAds));
+
         } catch (error) {
             console.error('Error deleting advert:', error);
+            alert('Failed to delete advert completely.');
         }
     }
 }
 
-// --- GLOBAL SHOP OWNER ROUTING HANDLER (Fixes the badge onclick error) ---
+// --- GLOBAL SHOP OWNER ROUTING HANDLER ---
 function handleShopOwnerRouting() {
     const currentUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
     const USER_SHOP_KEY = `shopData_${currentUser}`;
     const registeredVendor = localStorage.getItem(USER_SHOP_KEY);
 
     if (registeredVendor) {
-        // If registered, go directly to their shop storefront view
         window.location.href = "shop.html";
     } else {
-        // If not registered, go to the shop page with the registration section open
         window.location.href = "shop.html?register=true";
     }
 }
