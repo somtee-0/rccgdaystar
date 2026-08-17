@@ -112,78 +112,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 9. RENDER USER / PUBLIC ADVERTS (UPDATED FOR MONGODB SYNC) ---
-    async function renderShopAdverts(targetUser) {
-        const emptyAdvertsBox = document.getElementById('emptyAdvertsBox');
+    // --- 9. RENDER USER / PUBLIC ADVERTS (MONGODB SYNCED) ---
+    async function renderShopAdverts(vendorIdentifier) {
         const activeAdvertsGrid = document.getElementById('activeAdvertsGrid');
-
+        const emptyAdvertsBox = document.getElementById('emptyAdvertsBox');
         if (!activeAdvertsGrid || !emptyAdvertsBox) return;
-
-        // Fallback: If targetUser isn't passed, check URL params directly
-        const urlParams = new URLSearchParams(window.location.search);
-        const effectiveTarget = targetUser || urlParams.get('vendor');
-
-        let validAdverts = [];
 
         try {
             const response = await fetch('https://rccgdaystar-backend.onrender.com/api/adverts');
             if (response.ok) {
-                const serverAds = await response.json();
-                validAdverts = serverAds.filter(ad => {
-                    if (!ad) return false;
-                    // Strict check: Must match the vendorId, user stamp, email, or name exactly if effectiveTarget exists
-                    if (effectiveTarget) {
-                        return ad.vendorId === effectiveTarget ||
-                            ad.user === effectiveTarget ||
-                            ad.email === effectiveTarget ||
-                            ad.vendorName === effectiveTarget;
-                    }
-                    return false;
-                });
-            }
-        } catch (err) {
-            console.warn('Backend server unreachable, falling back to local storage adverts.', err);
-        }
+                const allAds = await response.json();
 
-        // Fallback to localStorage if backend didn't yield items for this specific vendor
-        if (validAdverts.length === 0 && effectiveTarget) {
-            const allAdverts =
-                JSON.parse(localStorage.getItem(`userAdverts_${effectiveTarget}`)) ||
-                JSON.parse(localStorage.getItem('userAdverts')) ||
-                JSON.parse(localStorage.getItem('adverts')) || [];
+                // Strict filtering: Only display adverts belonging to this specific vendor identifier
+                const validAdverts = allAds.filter(ad =>
+                    ad.vendorId === vendorIdentifier || ad.user === vendorIdentifier || ad.email === vendorIdentifier
+                );
 
-            validAdverts = allAdverts.filter(ad => {
-                if (!ad) return false;
-                const belongsToUser = !ad.user || ad.user === effectiveTarget || ad.vendorId === effectiveTarget || ad.email === effectiveTarget;
-                const hasImage = ad.image || ad.imageUrl || ad.img || ad.src || typeof ad === 'string';
-                return belongsToUser && hasImage;
-            });
-        }
+                if (validAdverts.length > 0) {
+                    emptyAdvertsBox.style.setProperty('display', 'none', 'important');
+                    activeAdvertsGrid.style.setProperty('display', 'grid', 'important');
 
-        if (validAdverts.length > 0) {
-            emptyAdvertsBox.style.setProperty('display', 'none', 'important');
-            activeAdvertsGrid.style.setProperty('display', 'grid', 'important');
-
-            activeAdvertsGrid.innerHTML = validAdverts.slice(0, 4).map((ad, idx) => {
-                const imgSrc = typeof ad === 'string' ? ad : (ad.imageUrl || ad.image || ad.img || ad.src || '../assets/images/default-ad.jpg');
-                const title = typeof ad === 'object' ? (ad.title || ad.adTitle || `Advert #${idx + 1}`) : `Advert #${idx + 1}`;
-                const category = typeof ad === 'object' ? (ad.category || 'Featured') : 'Featured';
-
-                return `
+                    activeAdvertsGrid.innerHTML = validAdverts.map(ad => `
                     <div class="vendor-ad-card" style="border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
                         <div style="width: 100%; height: 160px; overflow: hidden; background: #f8f9fa;">
-                            <img src="${imgSrc}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='../assets/images/default-ad.jpg'">
+                            <img src="${ad.imageUrl || '../assets/images/default-ad.jpg'}" alt="${ad.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='../assets/images/default-ad.jpg'">
                         </div>
                         <div style="padding: 12px;">
-                            <h5 style="font-size: 0.95rem; font-weight: 600; color: #110738; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${title}</h5>
-                            <span style="font-size: 0.75rem; color: #e2b74c; font-weight: 600; text-transform: uppercase;">${category}</span>
+                            <h5 style="font-size: 0.95rem; font-weight: 600; color: #110738; margin: 0 0 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${ad.title}</h5>
+                            <span style="font-size: 0.75rem; color: #e2b74c; font-weight: 600; text-transform: uppercase;">${ad.price || 'Contact for price'}</span>
                         </div>
                     </div>
-                `;
-            }).join('');
-        } else {
-            emptyAdvertsBox.style.setProperty('display', 'flex', 'important');
-            activeAdvertsGrid.style.setProperty('display', 'none', 'important');
+                `).join('');
+                } else {
+                    emptyAdvertsBox.style.setProperty('display', 'flex', 'important');
+                    activeAdvertsGrid.style.setProperty('display', 'none', 'important');
+                }
+            }
+        } catch (err) {
+            console.error("Failed to load adverts from backend", err);
         }
     }
 
@@ -194,37 +160,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const isShopPage = window.location.pathname.includes('shop.html');
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
-        // Removed the currentUser restriction so any user/guest can view any vendor's card
         if (requestedVendorId) {
-            let vendorShopData = JSON.parse(localStorage.getItem(`shopData_${requestedVendorId}`));
+            let vendorShopData = null;
 
-            // If not found in localStorage, attempt to fetch vendor details from MongoDB backend API
-            if (!vendorShopData) {
-                try {
-                    const res = await fetch(`https://rccgdaystar-backend.onrender.com/api/adverts`);
-                    if (res.ok) {
-                        const allAds = await res.json();
-                        const foundAd = allAds.find(a => a.vendorId === requestedVendorId || a._id === requestedVendorId);
-                        if (foundAd) {
-                            vendorShopData = {
-                                name: foundAd.vendorName || 'Verified Vendor',
-                                ownerName: foundAd.vendorName || 'Verified Vendor',
-                                category: foundAd.category || 'Verified Partner',
-                                location: foundAd.location || 'RCCG Daystar Hub',
-                                phone: foundAd.phone || 'N/A',
-                                email: foundAd.email || 'N/A',
-                                whatsapp: foundAd.whatsapp || '',
-                                social: foundAd.social || '#',
-                                experience: foundAd.experience || 'Verified Partner'
-                            };
-                        }
+            try {
+                // Fetch directly from your MongoDB backend shops API
+                const res = await fetch(`https://rccgdaystar-backend.onrender.com/api/shops`);
+                if (res.ok) {
+                    const allShops = await res.json();
+                    // Match strictly by MongoDB _id, email, or owner name
+                    const foundShop = allShops.find(s =>
+                        s._id === requestedVendorId ||
+                        s.email === requestedVendorId ||
+                        s.ownerName === requestedVendorId
+                    );
+
+                    if (foundShop) {
+                        vendorShopData = {
+                            name: foundShop.shopName,
+                            ownerName: foundShop.ownerName,
+                            category: foundShop.category,
+                            location: foundShop.location || 'RCCG Daystar Hub',
+                            phone: foundShop.phone,
+                            email: foundShop.email,
+                            whatsapp: foundShop.whatsapp || '',
+                            social: foundShop.social || '#',
+                            experience: foundShop.experience || 'Verified Partner'
+                        };
                     }
-                } catch (e) {
-                    console.warn('Could not fetch vendor info from server fallback', e);
                 }
+            } catch (e) {
+                console.warn('Could not fetch shop info from backend', e);
             }
 
-            // CLEAN 404 STATE: If the vendor still does not exist anywhere, display clean error
+            // CLEAN 404 STATE: If the vendor still does not exist, display clean error
             if (!vendorShopData) {
                 if (isShopPage) {
                     const mainContainer = document.querySelector('.shop-setup-section .container') || document.body;
@@ -232,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div style="text-align: center; padding: 80px 20px; font-family: inherit;">
                             <i class="bi bi-shop-window" style="font-size: 3.5rem; color: #cbd5e1; display: block; margin-bottom: 16px;"></i>
                             <h2 style="color: #110738; font-size: 1.5rem; margin-bottom: 8px;">Shop Not Found</h2>
-                            <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">The vendor profile you are trying to view does not exist or has not been registered.</p>
+                            <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">The vendor profile you are trying to view does not exist or has not been registered in the database.</p>
                             <a href="index.html" style="background: #110738; color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block;">Return to Hub</a>
                         </div>
                     `;
@@ -255,14 +224,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const tagEl = document.getElementById('displayShopTagline') || document.getElementById('verifiedCategory');
             const ownerEl = document.getElementById('detailOwnerName');
             if (ownerEl) {
-                ownerEl.textContent = vendorShopData?.ownerName || vendorShopData?.name || requestedVendorId || 'N/A';
+                ownerEl.textContent = vendorShopData.ownerName;
             }
 
             if (titleEl) titleEl.textContent = vendorShopData.name;
             if (tagEl) tagEl.textContent = vendorShopData.category;
 
             const locEl = document.getElementById('verifiedLocation') || document.getElementById('displayShopLocation');
-            if (locEl) locEl.textContent = vendorShopData.location || 'RCCG Daystar Hub';
+            if (locEl) locEl.textContent = vendorShopData.location;
 
             if (vendorBanner && bannerContainer) {
                 bannerContainer.style.backgroundImage = `url('${vendorBanner}')`;
@@ -273,6 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 vendorUploadedLogo.src = vendorLogo;
             }
 
+            // Load adverts specifically for this vendor's email/ID
             await renderShopAdverts(requestedVendorId);
             return;
         }
@@ -314,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (document.getElementById('verifiedBizName')) document.getElementById('verifiedBizName').textContent = shopData.name;
             if (document.getElementById('detailBizName')) document.getElementById('detailBizName').textContent = shopData.name;
 
-            // ADD THIS LINE TO FIX THE OWNER NAME:
             const detailOwnerEl = document.getElementById('detailOwnerName');
             if (detailOwnerEl) detailOwnerEl.textContent = shopData.ownerName || 'N/A';
 
@@ -415,7 +384,6 @@ if (feedbackForm) {
     feedbackForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Check if viewing a public vendor profile via URL parameter, otherwise default to logged-in user
         const urlParams = new URLSearchParams(window.location.search);
         const requestedVendorId = urlParams.get('vendor');
         const targetUser = requestedVendorId || localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || 'default_user';
