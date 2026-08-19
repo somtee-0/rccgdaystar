@@ -187,6 +187,38 @@ document.addEventListener('DOMContentLoaded', () => {
                             social: foundShop.social || '#',
                             experience: foundShop.experience || 'Verified Partner'
                         };
+                    } else {
+                        // FALLBACK: If the requested ID was actually an Advert ID, fetch adverts to find the owner
+                        const adRes = await fetch(`https://rccgdaystar-backend.onrender.com/api/adverts`);
+                        if (adRes.ok) {
+                            const allAds = await adRes.json();
+                            const matchedAd = allAds.find(ad => ad._id === requestedVendorId || ad.id === requestedVendorId);
+
+                            if (matchedAd) {
+                                const realVendorKey = matchedAd.vendorId || matchedAd.user || matchedAd.email;
+                                const matchingShop = allShops.find(s =>
+                                    s._id === realVendorKey ||
+                                    s.email === realVendorKey ||
+                                    s.ownerName === realVendorKey
+                                );
+
+                                if (matchingShop) {
+                                    vendorShopData = {
+                                        name: matchingShop.shopName,
+                                        ownerName: matchingShop.ownerName,
+                                        category: matchingShop.category,
+                                        location: matchingShop.location || 'RCCG Daystar Hub',
+                                        phone: matchingShop.phone,
+                                        email: matchingShop.email,
+                                        whatsapp: matchingShop.whatsapp || '',
+                                        social: matchingShop.social || '#',
+                                        experience: matchingShop.experience || 'Verified Partner'
+                                    };
+                                    // Remap requestedVendorId so renderShopAdverts picks up the right ads below
+                                    requestedVendorId = realVendorKey;
+                                }
+                            }
+                        }
                     }
                 }
             } catch (e) {
