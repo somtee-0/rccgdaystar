@@ -161,12 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 10. DYNAMIC STATE LOADER (UPDATED FOR MONGODB VENDOR RESOLUTION) ---
     async function loadShopState() {
         const urlParams = new URLSearchParams(window.location.search);
-        let requestedVendorId = urlParams.get('vendor'); // <--- Change 'const' to 'let' here
+        let requestedVendorId = urlParams.get('vendor');
         const isShopPage = window.location.pathname.includes('shop.html');
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
         if (requestedVendorId) {
-            // Safely decode any encoded characters, handling double-encoding like %2540 -> %40 -> @
+            // Safely decode any encoded characters
             while (requestedVendorId.includes('%')) {
                 const decoded = decodeURIComponent(requestedVendorId);
                 if (decoded === requestedVendorId) break;
@@ -183,40 +183,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                // Fetch directly from your MongoDB backend shops API
-                const res = await fetch(`https://rccgdaystar-backend.onrender.com/api/shops`);
+                // NEW: Direct backend lookup using the cleaned requestedVendorId
+                const res = await fetch(`https://rccgdaystar-backend.onrender.com/api/shops/find/${encodeURIComponent(requestedVendorId)}`);
+
                 if (res.ok) {
-                    const allShops = await res.json();
-                    // Match strictly by MongoDB _id, email, or owner name (case-insensitive for email/owner)
-                    const foundShop = allShops.find(s =>
-                        s._id === requestedVendorId ||
-                        s.email?.toLowerCase() === requestedVendorId.toLowerCase() ||
-                        s.ownerName?.toLowerCase() === requestedVendorId.toLowerCase()
-                    );
+                    const foundShop = await res.json();
 
-                    if (foundShop) {
-                        vendorShopData = {
-                            name: foundShop.shopName,
-                            ownerName: foundShop.ownerName,
-                            category: foundShop.category,
-                            location: foundShop.location || 'RCCG Daystar Hub',
-                            phone: foundShop.phone,
-                            email: foundShop.email,
-                            whatsapp: foundShop.whatsapp || '',
-                            social: foundShop.social || '#',
-                            experience: foundShop.experience || 'Verified Partner'
-                        };
-                        // Safe reassignment since requestedVendorId is now declared with 'let'
-                        requestedVendorId = foundShop.email;
-                    } else {
-                        // FALLBACK: If the requested ID was actually an Advert ID, fetch adverts to find the owner
-                        const adRes = await fetch(`https://rccgdaystar-backend.onrender.com/api/adverts`);
-                        if (adRes.ok) {
-                            const allAds = await adRes.json();
-                            const matchedAd = allAds.find(ad => ad._id === requestedVendorId || ad.id === requestedVendorId);
+                    // Map the database shop object to your internal shop data structure
+                    vendorShopData = {
+                        name: foundShop.shopName,
+                        ownerName: foundShop.ownerName,
+                        category: foundShop.category,
+                        location: foundShop.location || 'RCCG Daystar Hub',
+                        phone: foundShop.phone,
+                        email: foundShop.email,
+                        whatsapp: foundShop.whatsapp || '',
+                        social: foundShop.social || '#',
+                        experience: foundShop.experience || 'Verified Partner'
+                    };
 
-                            if (matchedAd) {
-                                const realVendorKey = matchedAd.vendorId || matchedAd.user || matchedAd.email;
+                    // Ensure the ID is synchronized with the email
+                    requestedVendorId = foundShop.email;
+                } else {
+                    console.warn("Shop not found via direct lookup, attempting fallback.");
+
+                    // FALLBACK: If direct lookup misses, check advert IDs
+                    const adRes = await fetch(`https://rccgdaystar-backend.onrender.com/api/adverts`);
+                    if (adRes.ok) {
+                        const allAds = await adRes.json();
+                        const matchedAd = allAds.find(ad => ad._id === requestedVendorId || ad.id === requestedVendorId);
+
+                        if (matchedAd) {
+                            const realVendorKey = matchedAd.vendorId || matchedAd.user || matchedAd.email;
+                            const allShopsRes = await fetch(`https://rccgdaystar-backend.onrender.com/api/shops`);
+                            if (allShopsRes.ok) {
+                                const allShops = await allShopsRes.json();
                                 const matchingShop = allShops.find(s =>
                                     s._id === realVendorKey ||
                                     s.email?.toLowerCase() === realVendorKey?.toLowerCase() ||
@@ -235,15 +236,14 @@ document.addEventListener('DOMContentLoaded', () => {
                                         social: matchingShop.social || '#',
                                         experience: matchingShop.experience || 'Verified Partner'
                                     };
-                                    // Remap requestedVendorId so renderShopAdverts picks up the right ads below
                                     requestedVendorId = matchingShop.email;
                                 }
                             }
                         }
                     }
                 }
-            } catch (e) {
-                console.warn('Could not fetch shop info from backend', e);
+            } catch (error) {
+                console.error("Error fetching shop data:", error);
             }
 
             // CLEAN 404 STATE: If the vendor still does not exist, display clean error
@@ -251,13 +251,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isShopPage) {
                     const mainContainer = document.querySelector('.shop-setup-section .container') || document.body;
                     mainContainer.innerHTML = `
-                        <div style="text-align: center; padding: 80px 20px; font-family: inherit;">
-                            <i class="bi bi-shop-window" style="font-size: 3.5rem; color: #cbd5e1; display: block; margin-bottom: 16px;"></i>
-                            <h2 style="color: #110738; font-size: 1.5rem; margin-bottom: 8px;">Shop Not Found</h2>
-                            <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">The vendor profile you are trying to view does not exist or has not been registered in the database.</p>
-                            <a href="index.html" style="background: #110738; color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block;">Return to Hub</a>
-                        </div>
-                    `;
+                    <div style="text-align: center; padding: 80px 20px; font-family: inherit;">
+                        <i class="bi bi-shop-window" style="font-size: 3.5rem; color: #cbd5e1; display: block; margin-bottom: 16px;"></i>
+                        <h2 style="color: #110738; font-size: 1.5rem; margin-bottom: 8px;">Shop Not Found</h2>
+                        <p style="color: #64748b; font-size: 0.95rem; margin-bottom: 20px;">The vendor profile you are trying to view does not exist or has not been registered in the database.</p>
+                        <a href="index.html" style="background: #110738; color: #fff; padding: 10px 24px; border-radius: 8px; text-decoration: none; font-weight: 500; display: inline-block;">Return to Hub</a>
+                    </div>
+                `;
                 }
                 return;
             }
