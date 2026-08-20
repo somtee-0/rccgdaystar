@@ -45,7 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     bannerContainer.style.backgroundImage = `url('${bannerUrl}')`;
                     bannerContainer.style.backgroundSize = 'cover';
                     bannerContainer.style.backgroundPosition = 'center';
+
+                    // Save to current user's localStorage keys
                     localStorage.setItem(USER_BANNER_KEY, bannerUrl);
+
+                    // Also save using the user's email directly if available for cross-page lookup
+                    if (currentUser) {
+                        localStorage.setItem(`shopBanner_${currentUser}`, bannerUrl);
+                    }
                 };
                 reader.readAsDataURL(file);
             }
@@ -161,18 +168,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
         if (requestedVendorId) {
+            // Safely decode any encoded characters like %2540 or %40 to standard '@'
+            requestedVendorId = decodeURIComponent(requestedVendorId);
+
             let vendorShopData = null;
+
+            // Force hide setup forms immediately so it never flashes the registration form
+            if (isShopPage) {
+                if (state1Card) state1Card.style.display = 'none';
+                if (state2Card) state2Card.style.display = 'none';
+                if (state3Card) state3Card.style.display = 'block';
+            }
 
             try {
                 // Fetch directly from your MongoDB backend shops API
                 const res = await fetch(`https://rccgdaystar-backend.onrender.com/api/shops`);
                 if (res.ok) {
                     const allShops = await res.json();
-                    // Match strictly by MongoDB _id, email, or owner name
+                    // Match strictly by MongoDB _id, email, or owner name (case-insensitive for email/owner)
                     const foundShop = allShops.find(s =>
                         s._id === requestedVendorId ||
-                        s.email === requestedVendorId ||
-                        s.ownerName === requestedVendorId
+                        s.email?.toLowerCase() === requestedVendorId.toLowerCase() ||
+                        s.ownerName?.toLowerCase() === requestedVendorId.toLowerCase()
                     );
 
                     if (foundShop) {
@@ -187,6 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             social: foundShop.social || '#',
                             experience: foundShop.experience || 'Verified Partner'
                         };
+                        // Use the verified database email as the canonical key for banners/logos
+                        requestedVendorId = foundShop.email;
                     } else {
                         // FALLBACK: If the requested ID was actually an Advert ID, fetch adverts to find the owner
                         const adRes = await fetch(`https://rccgdaystar-backend.onrender.com/api/adverts`);
@@ -198,8 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 const realVendorKey = matchedAd.vendorId || matchedAd.user || matchedAd.email;
                                 const matchingShop = allShops.find(s =>
                                     s._id === realVendorKey ||
-                                    s.email === realVendorKey ||
-                                    s.ownerName === realVendorKey
+                                    s.email?.toLowerCase() === realVendorKey?.toLowerCase() ||
+                                    s.ownerName?.toLowerCase() === realVendorKey?.toLowerCase()
                                 );
 
                                 if (matchingShop) {
@@ -215,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         experience: matchingShop.experience || 'Verified Partner'
                                     };
                                     // Remap requestedVendorId so renderShopAdverts picks up the right ads below
-                                    requestedVendorId = realVendorKey;
+                                    requestedVendorId = matchingShop.email;
                                 }
                             }
                         }
@@ -268,6 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (vendorBanner && bannerContainer) {
                 bannerContainer.style.backgroundImage = `url('${vendorBanner}')`;
                 bannerContainer.style.backgroundSize = 'cover';
+                bannerContainer.style.backgroundPosition = 'center';
             }
 
             if (vendorLogo && vendorUploadedLogo) {
