@@ -166,8 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
         if (requestedVendorId) {
-            // Safely decode any encoded characters like %2540 or %40 to standard '@'
-            requestedVendorId = decodeURIComponent(requestedVendorId);
+            // Safely decode any encoded characters, handling double-encoding like %2540 -> %40 -> @
+            while (requestedVendorId.includes('%')) {
+                const decoded = decodeURIComponent(requestedVendorId);
+                if (decoded === requestedVendorId) break;
+                requestedVendorId = decoded;
+            }
 
             let vendorShopData = null;
 

@@ -221,8 +221,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Save strictly to the session-scoped localStorage key
-            localStorage.setItem(userAdvertsKey, JSON.stringify(currentLocalAds));
+            // Save strictly to the session-scoped localStorage key, wrapped to prevent QuotaExceededError crashes
+            try {
+                localStorage.setItem(userAdvertsKey, JSON.stringify(currentLocalAds));
+            } catch (e) {
+                console.warn('LocalStorage quota exceeded. Skipping local backup, data lives on backend.', e);
+            }
 
             updateAdvertCount();
             resetFormState();
