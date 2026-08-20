@@ -265,7 +265,15 @@ function handleHubAdvertClick(vendorId) {
             alert('Please sign in to view vendor details.');
         }
     } else {
-        // This passes the vendorId to the shop page URL cleanly
-        window.location.href = `shop.html?vendor=${encodeURIComponent(vendorId)}`;
+        // Fallback check: if vendorId is missing or invalid, grab the current logged-in user's email
+        const activeUser = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser') || '';
+        let targetId = vendorId;
+
+        if (!targetId || targetId === 'vendor' || targetId === 'undefined' || targetId === 'null') {
+            targetId = activeUser;
+        }
+
+        // Passes the clean, valid vendor identifier to the shop page URL
+        window.location.href = `shop.html?vendor=${encodeURIComponent(targetId)}`;
     }
 }

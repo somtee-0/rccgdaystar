@@ -166,11 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = document.getElementById('adPrice').value || 'Contact for price';
             const desc = document.getElementById('adDesc').value;
 
-            // Dynamically capture the selected category from the dropdown form element
-            const categorySelect = document.getElementById('adCategory');
-            const category = categorySelect ? categorySelect.value : 'General';
+            // Dynamically capture the active user session with a strict fallback
+            const activeVendorEmail = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser');
 
-            let currentLocalAds = JSON.parse(localStorage.getItem(userAdvertsKey)) || [];
+            if (!activeVendorEmail || activeVendorEmail === 'default_user') {
+                alert('Session expired or user not recognized. Please sign in again.');
+                return;
+            }
 
             for (let index = 0; index < uploadedFiles.length; index++) {
                 const base64Img = await fileToBase64(uploadedFiles[index]);
@@ -181,7 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     price: price,
                     imageUrl: base64Img,
                     category: category,
-                    vendorId: currentUser // <-- STAMPS THE OWNER'S ID/EMAIL
+                    vendorId: activeVendorEmail, // <-- STAMPS THE TRUE VERIFIED OWNER EMAIL
+                    user: activeVendorEmail
                 };
 
                 try {
