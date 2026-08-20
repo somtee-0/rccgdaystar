@@ -46,11 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     bannerContainer.style.backgroundSize = 'cover';
                     bannerContainer.style.backgroundPosition = 'center';
 
-                    // Save to current user's localStorage keys
+                    // Save universally across keys so it persists on reload and account switches
                     localStorage.setItem(USER_BANNER_KEY, bannerUrl);
-
-                    // Also save using the user's email directly if available for cross-page lookup
-                    if (currentUser) {
+                    if (currentUser && currentUser !== 'default_user') {
                         localStorage.setItem(`shopBanner_${currentUser}`, bannerUrl);
                     }
                 };
@@ -163,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 10. DYNAMIC STATE LOADER (UPDATED FOR MONGODB VENDOR RESOLUTION) ---
     async function loadShopState() {
         const urlParams = new URLSearchParams(window.location.search);
-        const requestedVendorId = urlParams.get('vendor');
+        let requestedVendorId = urlParams.get('vendor'); // <--- Change 'const' to 'let' here
         const isShopPage = window.location.pathname.includes('shop.html');
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
@@ -204,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             social: foundShop.social || '#',
                             experience: foundShop.experience || 'Verified Partner'
                         };
-                        // Use the verified database email as the canonical key for banners/logos
+                        // Safe reassignment since requestedVendorId is now declared with 'let'
                         requestedVendorId = foundShop.email;
                     } else {
                         // FALLBACK: If the requested ID was actually an Advert ID, fetch adverts to find the owner
