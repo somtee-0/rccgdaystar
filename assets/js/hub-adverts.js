@@ -265,6 +265,7 @@ function handleHubAdvertClick(vendorId) {
             alert('Please sign in to view vendor details.');
         }
     } else {
-        window.location.href = `shop.html?vendor=${encodeURIComponent(vendorId)}`
+        // Passes both router keys to guarantee the shop page catches the correct vendor profile without 404 errors
+        window.location.href = `shop.html?vendor=${encodeURIComponent(vendorId)}&view=${encodeURIComponent(vendorId)}`;
     }
 }

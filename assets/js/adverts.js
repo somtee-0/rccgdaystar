@@ -221,9 +221,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Save strictly to the session-scoped localStorage key, wrapped to prevent QuotaExceededError crashes
+            // Strip heavy image base64 strings to prevent localStorage from hitting the 5MB quota limit
+            const lightweightAds = currentLocalAds.map(ad => ({
+                id: ad.id,
+                title: ad.title,
+                price: ad.price,
+                desc: ad.desc,
+                image: ad.image && ad.image.startsWith('data:') ? '../assets/images/default-ad.jpg' : ad.image
+            }));
+
             try {
-                localStorage.setItem(userAdvertsKey, JSON.stringify(currentLocalAds));
+                localStorage.setItem(userAdvertsKey, JSON.stringify(lightweightAds));
             } catch (e) {
                 console.warn('LocalStorage quota exceeded. Skipping local backup, data lives on backend.', e);
             }
