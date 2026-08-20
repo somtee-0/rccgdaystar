@@ -161,17 +161,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 10. DYNAMIC STATE LOADER (UPDATED FOR MONGODB VENDOR RESOLUTION) ---
     async function loadShopState() {
         const urlParams = new URLSearchParams(window.location.search);
-        let requestedVendorId = urlParams.get('vendor');
+        let requestedVendorId = urlParams.get('vendor') || urlParams.get('view');
         const isShopPage = window.location.pathname.includes('shop.html');
 
         // SCENARIO A: VISITING A PUBLIC VENDOR PROFILE VIA URL (?vendor=...)
         if (requestedVendorId) {
-            // Safely decode any encoded characters
+            // Safely decode any encoded characters, handling double-encoding like %2540 -> %40 -> @
             while (requestedVendorId.includes('%')) {
-                const decoded = decodeURIComponent(requestedVendorId);
-                if (decoded === requestedVendorId) break;
-                requestedVendorId = decoded;
+                try {
+                    const decoded = decodeURIComponent(requestedVendorId);
+                    if (decoded === requestedVendorId) break;
+                    requestedVendorId = decoded;
+                } catch (e) {
+                    break;
+                }
             }
+            requestedVendorId = requestedVendorId.trim();
 
             let vendorShopData = null;
 
