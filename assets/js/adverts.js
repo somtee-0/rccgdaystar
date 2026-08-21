@@ -166,13 +166,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const price = document.getElementById('adPrice').value || 'Contact for price';
             const desc = document.getElementById('adDesc').value;
 
-            // Dynamically capture the active user session with a strict fallback
+            // --- DEFINE CATEGORY HERE ---
+            const categorySelect = document.getElementById('adCategory');
+            const category = categorySelect ? categorySelect.value : 'General';
+
             const activeVendorEmail = localStorage.getItem('currentUserEmail') || localStorage.getItem('currentUser');
 
             if (!activeVendorEmail || activeVendorEmail === 'default_user') {
                 alert('Session expired or user not recognized. Please sign in again.');
                 return;
             }
+
+            let currentLocalAds = JSON.parse(localStorage.getItem(userAdvertsKey)) || [];
 
             for (let index = 0; index < uploadedFiles.length; index++) {
                 const base64Img = await fileToBase64(uploadedFiles[index]);
@@ -182,8 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     description: desc,
                     price: price,
                     imageUrl: base64Img,
-                    category: category,
-                    vendorId: activeVendorEmail, // <-- STAMPS THE TRUE VERIFIED OWNER EMAIL
+                    category: category, // Now it correctly references the variable above
+                    vendorId: activeVendorEmail,
                     user: activeVendorEmail
                 };
 
