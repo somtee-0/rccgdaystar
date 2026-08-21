@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 // NEW: Direct backend lookup using the cleaned requestedVendorId
-                const res = await fetch(`https://rccgdaystar-backend.onrender.com/api/shops/find/${encodeURIComponent(requestedVendorId)}`);
+                const res = await fetch(`https://rccgdaystar-backend.onrender.com/api/shops/find/${requestedVendorId}`);
 
                 if (res.ok) {
                     const foundShop = await res.json();
